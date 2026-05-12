@@ -1,0 +1,1912 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Events Rental Hub Preview V1</title>
+    <style>
+      :root {
+        --slate-950: #020617;
+        --slate-800: #1e293b;
+        --slate-700: #334155;
+        --slate-600: #475569;
+        --slate-500: #64748b;
+        --slate-400: #94a3b8;
+        --slate-300: #cbd5e1;
+        --slate-200: #e2e8f0;
+        --slate-100: #f1f5f9;
+        --slate-50: #f8fafc;
+        --orange-500: #f97316;
+        --orange-600: #ea580c;
+        --emerald-800: #065f46;
+        --emerald-50: #ecfdf5;
+        --emerald-200: #a7f3d0;
+        --red-50: #fef2f2;
+        --red-100: #fee2e2;
+        --red-700: #b91c1c;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--slate-950);
+        background: white;
+      }
+
+      a { color: inherit; }
+      h1, h2, h3, p { overflow-wrap: anywhere; }
+      .page { min-height: 100vh; padding-bottom: 84px; }
+      .container { width: min(100% - 32px, 1280px); margin: 0 auto; }
+      .header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        border-bottom: 1px solid var(--slate-200);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(12px);
+      }
+      .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 12px 0;
+      }
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+      }
+      .logo-shell {
+        display: grid;
+        place-items: center;
+        width: 44px;
+        height: 44px;
+        border: 2px solid var(--slate-950);
+        border-radius: 999px;
+        background: white;
+      }
+      .logo-dot {
+        display: grid;
+        place-items: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 999px;
+        background: var(--slate-950);
+        box-shadow: inset 0 0 0 2px white;
+      }
+      .logo-img {
+        width: 100%;
+        height: 100%;
+        border-radius: 999px;
+        object-fit: cover;
+        display: block;
+      }
+      .logo-title { margin: 0; font-size: clamp(16px, 2vw, 20px); font-weight: 950; letter-spacing: -0.02em; }
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 0;
+        border-radius: 12px;
+        background: var(--orange-500);
+        color: white;
+        padding: 14px 20px;
+        font-size: 16px;
+        font-weight: 900;
+        text-decoration: none;
+        box-shadow: 0 10px 22px rgba(249, 115, 22, 0.26);
+      }
+      .cta:hover { background: var(--orange-600); }
+      .trust-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        margin: 0 0 16px;
+        border: 1px solid var(--slate-200);
+        border-radius: 999px;
+        background: white;
+        padding: 10px 16px;
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+      }
+      .trust-badge span {
+        display: grid;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 999px;
+        background: #16a34a;
+        color: white;
+        font-size: 14px;
+        font-weight: 950;
+      }
+      .trust-badge strong {
+        color: var(--slate-800);
+        font-size: 13px;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .hero {
+        background:
+          radial-gradient(circle at top right, rgba(15, 23, 42, 0.10), transparent 35%),
+          radial-gradient(circle at bottom left, rgba(15, 23, 42, 0.08), transparent 30%),
+          var(--slate-50);
+      }
+      .hero-grid {
+        display: grid;
+        gap: 40px;
+        padding: 48px 0;
+      }
+      .hero-main {
+        max-width: 620px;
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(40px, 7vw, 72px);
+        line-height: 1.05;
+        letter-spacing: -0.03em;
+        font-weight: 950;
+      }
+      h2 {
+        margin: 0;
+        font-size: clamp(32px, 5vw, 56px);
+        line-height: 1.08;
+        letter-spacing: -0.03em;
+        font-weight: 950;
+      }
+      h3 {
+        margin: 0;
+        font-size: 24px;
+        line-height: 1.2;
+        font-weight: 950;
+        letter-spacing: -0.02em;
+      }
+      .hero-copy, .section-copy {
+        margin: 18px 0 0;
+        color: var(--slate-700);
+        font-size: clamp(18px, 2vw, 20px);
+        line-height: 1.6;
+      }
+      .hero-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        margin-top: 28px;
+        max-width: 560px;
+        text-align: center;
+      }
+      .hero-actions .cta {
+        min-width: 220px;
+        padding: 17px 26px;
+        text-align: center;
+        line-height: 1;
+      }
+      .microcopy { margin: 0; color: var(--slate-600); font-size: 14px; font-weight: 700; }
+      .rush { color: var(--slate-950); font-size: 14px; font-weight: 950; text-underline-offset: 4px; }
+      .photo-card {
+        border: 1px solid var(--slate-200);
+        border-radius: 32px;
+        background: white;
+        padding: 12px;
+        box-shadow: 0 22px 42px rgba(15, 23, 42, 0.12);
+        display: grid;
+        grid-template-rows: 1fr auto auto;
+        align-self: start;
+      }
+      .photo {
+        position: relative;
+        height: 100%;
+        min-height: 420px;
+        overflow: hidden;
+        border-radius: 24px;
+        background:
+          linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.15)),
+          url("https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1100&q=80") center / cover;
+      }
+      .photo::after {
+        content: "Setup sample";
+        position: absolute;
+        right: 16px;
+        bottom: 16px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.9);
+        padding: 8px 12px;
+        color: var(--slate-950);
+        font-size: 12px;
+        font-weight: 900;
+      }
+      .photo-note { padding: 10px 8px 6px; }
+      section { padding: 56px 0; }
+      .split { display: grid; gap: 32px; }
+      .soft-panel {
+        border-radius: 32px;
+        background: var(--slate-50);
+        padding: 24px;
+        color: var(--slate-700);
+        font-size: 18px;
+        line-height: 1.65;
+      }
+      .split .soft-panel {
+        max-width: 640px;
+        justify-self: end;
+      }
+      .cards-3, .cards-4, .catalog-grid, .testimonials, .logos, .faq-grid { display: grid; gap: 16px; }
+      .cards-3, .cards-4 { margin-top: 20px; }
+      .issue-card {
+        border: 1px solid var(--red-100);
+        border-radius: 16px;
+        background: var(--red-50);
+        padding: 20px;
+      }
+      .issue-card strong {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--red-700);
+        font-weight: 950;
+      }
+      .issue-mark {
+        display: grid;
+        place-items: center;
+        width: 26px;
+        height: 26px;
+        border-radius: 999px;
+        background: white;
+        color: var(--red-700);
+        font-weight: 950;
+      }
+      .issue-card p, .faq-card p, .testimonial p, .guarantee-card p {
+        margin: 10px 0 0;
+        color: var(--slate-700);
+        font-size: 15px;
+        line-height: 1.7;
+      }
+      .success-banner {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 24px;
+        border: 1px solid var(--emerald-200);
+        border-radius: 16px;
+        background: var(--emerald-50);
+        padding: 20px;
+        color: var(--emerald-800);
+        font-size: 16px;
+        font-weight: 900;
+      }
+      .success-mark {
+        display: grid;
+        place-items: center;
+        flex: 0 0 auto;
+        width: 26px;
+        height: 26px;
+        border-radius: 999px;
+        background: white;
+        color: var(--emerald-800);
+        font-weight: 950;
+      }
+      .catalog-band, .proof-band, .guarantee-band, .faq-band, .footer-band { background: var(--slate-50); }
+      .catalog-grid {
+        display: flex;
+        gap: 16px;
+        margin-top: 28px;
+        overflow-x: auto;
+        padding: 4px 2px 14px;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: thin;
+        scrollbar-color: var(--slate-300) transparent;
+        -webkit-overflow-scrolling: touch;
+      }
+      .catalog-grid::-webkit-scrollbar { height: 7px; }
+      .catalog-grid::-webkit-scrollbar-track { background: transparent; }
+      .catalog-grid::-webkit-scrollbar-thumb { border-radius: 999px; background: var(--slate-300); }
+      .catalog-card {
+        flex: 0 0 min(78vw, 300px);
+        scroll-snap-align: start;
+        overflow: hidden;
+        border: 1px solid var(--slate-200);
+        border-radius: 16px;
+        background: white;
+        box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
+      }
+      .catalog-art {
+        position: relative;
+        display: grid;
+        place-items: center;
+        aspect-ratio: 4 / 3;
+        background: linear-gradient(135deg, var(--slate-200), var(--slate-100));
+        color: var(--slate-500);
+        font-weight: 900;
+        background-size: cover;
+        background-position: center;
+      }
+      .catalog-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(2, 6, 23, 0.22), rgba(2, 6, 23, 0.02));
+      }
+      .catalog-controls {
+        position: absolute;
+        inset: auto 12px 12px;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .catalog-arrow {
+        display: grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        border: 0;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.92);
+        color: var(--slate-950);
+        font-size: 18px;
+        font-weight: 950;
+        cursor: pointer;
+      }
+      .catalog-dots {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.82);
+        padding: 7px 10px;
+      }
+      .catalog-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: rgba(2, 6, 23, 0.22);
+      }
+      .catalog-dot.is-active { background: var(--slate-950); }
+      .catalog-card h3 { padding: 16px; font-size: 16px; }
+      .service-panel {
+        border-radius: 32px;
+        background: var(--slate-950);
+        color: white;
+        padding: 24px;
+      }
+      .service-panel h2 {
+        font-size: clamp(30px, 4vw, 48px);
+      }
+      .service-panel .section-copy {
+        margin-top: 12px;
+        font-size: 17px;
+      }
+      .areas {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        overflow-x: auto;
+        padding: 2px 2px 10px;
+        scroll-snap-type: x proximity;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255,255,255,0.34) transparent;
+        -webkit-overflow-scrolling: touch;
+      }
+      .areas::-webkit-scrollbar { height: 6px; }
+      .areas::-webkit-scrollbar-track { background: transparent; }
+      .areas::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        background: rgba(255,255,255,0.28);
+      }
+      .service-contact-wrap {
+        margin-top: 18px;
+        display: grid;
+        gap: 10px;
+      }
+      .service-contact-copy {
+        margin: 0;
+        color: #e2e8f0;
+        font-size: 14px;
+        line-height: 1.7;
+        font-weight: 700;
+      }
+      .service-contact-grid {
+        display: grid;
+        gap: 10px;
+      }
+      .service-contact-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.08);
+        min-height: 76px;
+        padding: 12px 14px;
+        color: white;
+        text-decoration: none;
+        transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+      }
+      .service-contact-card:hover {
+        transform: translateY(-1px);
+        border-color: rgba(255, 255, 255, 0.18);
+        box-shadow: 0 10px 18px rgba(15, 23, 42, 0.18);
+      }
+      .service-contact-main {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+      .service-contact-main .social-icon {
+        flex: 0 0 auto;
+        background: white;
+        color: var(--slate-950);
+      }
+      .service-contact-copyline {
+        display: grid;
+        gap: 2px;
+      }
+      .service-contact-copyline strong {
+        font-size: 13px;
+        font-weight: 900;
+      }
+      .service-contact-copyline span {
+        color: #e2e8f0;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .service-contact-card .viber-badge {
+        color: #cbd5e1;
+        border-color: rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        flex: 0 0 auto;
+        min-width: 160px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.08);
+        padding: 10px 14px;
+        color: white;
+        font-size: 13px;
+        font-weight: 800;
+        scroll-snap-align: start;
+      }
+      .center { text-align: center; }
+      .testimonial, .faq-card, .guarantee-card {
+        border: 1px solid var(--slate-200);
+        border-radius: 16px;
+        background: white;
+        padding: 20px;
+      }
+      .testimonial small {
+        display: block;
+        margin-top: 16px;
+        color: var(--slate-500);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .logos { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 24px; }
+      .logo-box {
+        border: 1px solid var(--slate-200);
+        border-radius: 12px;
+        background: var(--slate-100);
+        padding: 16px 12px;
+        color: var(--slate-500);
+        text-align: center;
+        font-size: 12px;
+        font-weight: 950;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .guarantee-wrap {
+        border: 1px solid var(--emerald-200);
+        border-radius: 32px;
+        background: linear-gradient(180deg, var(--emerald-50), white 58%);
+        padding: 28px;
+        box-shadow: 0 18px 40px rgba(6, 95, 70, 0.08);
+      }
+      .guarantee-highlight {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+        border: 1px solid var(--emerald-200);
+        border-radius: 999px;
+        background: white;
+        padding: 8px 14px 8px 8px;
+        color: var(--emerald-800);
+        font-size: 13px;
+        font-weight: 950;
+      }
+      .guarantee-cards {
+        margin-top: 24px;
+      }
+      .guarantee-card {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: start;
+        gap: 14px;
+        border-color: var(--emerald-200);
+      }
+      .guarantee-card h3 {
+        font-size: 20px;
+      }
+      .guarantee-card p {
+        margin-top: 6px;
+      }
+      .guarantee-icon {
+        display: grid;
+        place-items: center;
+        width: 50px;
+        height: 50px;
+        border-radius: 999px;
+        background: var(--emerald-50);
+        color: var(--emerald-800);
+        box-shadow: inset 0 0 0 1px var(--emerald-200);
+      }
+      .guarantee-icon svg {
+        width: 28px;
+        height: 28px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .quote-grid {
+        display: grid;
+        gap: 40px;
+        align-items: start;
+      }
+      .contact-card {
+        margin-top: 32px;
+        border: 1px solid var(--slate-200);
+        border-radius: 32px;
+        background: var(--slate-50);
+        padding: 20px;
+      }
+      .contact-row { display: grid; gap: 8px; margin-bottom: 18px; }
+      .contact-row:last-child { margin-bottom: 0; }
+      .contact-row strong { font-weight: 950; }
+      .row-title {
+        color: var(--slate-950);
+        font-size: 14px;
+        font-weight: 950;
+      }
+      .row-subtext {
+        margin: -2px 0 4px;
+        color: var(--slate-500);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      .contact-card .connect-actions {
+        grid-template-columns: 1fr;
+      }
+      .contact-row p, .contact-row a {
+        margin: 0;
+        color: var(--slate-700);
+        font-size: 14px;
+        line-height: 1.7;
+      }
+      .dispatcher-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        border: 1px solid var(--slate-200);
+        border-radius: 18px;
+        background: white;
+        min-height: 92px;
+        padding: 16px;
+        color: var(--slate-950);
+        text-decoration: none;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+        transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+      }
+      .dispatcher-card:hover {
+        transform: translateY(-1px);
+        border-color: var(--slate-300);
+        box-shadow: 0 16px 28px rgba(15, 23, 42, 0.10);
+        text-decoration: none;
+      }
+      .dispatcher-main {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+      .dispatcher-copy {
+        display: grid;
+        gap: 3px;
+      }
+      .dispatcher-copy strong {
+        color: var(--slate-950);
+        font-size: 16px;
+        font-weight: 950;
+      }
+      .dispatcher-copy span {
+        color: var(--slate-600);
+        font-size: 13px;
+        font-weight: 800;
+        line-height: 1.45;
+      }
+      .dispatcher-action {
+        flex: 0 0 auto;
+        border-radius: 999px;
+        background: var(--orange-500);
+        color: white;
+        padding: 8px 12px;
+        font-size: 12px;
+        font-weight: 950;
+        white-space: nowrap;
+      }
+      .agent-main {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+      .agent-meta {
+        display: grid;
+        gap: 4px;
+      }
+      .agent-name {
+        color: var(--slate-950);
+        font-size: 14px;
+        font-weight: 900;
+      }
+      .agent-number {
+        color: var(--slate-700);
+        font-size: 14px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+      .agent-caption {
+        color: var(--slate-500);
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .viber-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid var(--slate-200);
+        border-radius: 999px;
+        background: var(--slate-50);
+        padding: 4px 8px;
+        color: var(--slate-500);
+        font-size: 11px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+      .viber-badge::before {
+        content: "✓";
+        color: var(--emerald-800);
+        font-size: 10px;
+        font-weight: 950;
+      }
+      .smart-contact {
+        color: inherit;
+        font-weight: 900;
+        text-decoration: none;
+        transition: opacity 0.16s ease, text-decoration-color 0.16s ease;
+      }
+      .smart-contact:hover {
+        opacity: 0.8;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+      .connect-section {
+        border-top: 1px solid var(--slate-200);
+      }
+      .connect-section .container {
+        padding-top: 56px;
+        padding-bottom: 32px;
+      }
+      .connect-wrap {
+        display: grid;
+        gap: 24px;
+        align-items: start;
+      }
+      .connect-copy {
+        max-width: 560px;
+      }
+      .connect-copy h2, .founder-copy h3 {
+        margin: 0;
+      }
+      .connect-points {
+        display: grid;
+        gap: 10px;
+        margin-top: 22px;
+      }
+      .connect-point {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--slate-700);
+        font-size: 14px;
+        font-weight: 800;
+      }
+      .connect-point span {
+        display: grid;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 999px;
+        background: var(--slate-950);
+        color: white;
+        font-size: 12px;
+        font-weight: 950;
+      }
+      .connect-actions, .founder-links {
+        display: grid;
+        gap: 12px;
+      }
+      .connect-panels {
+        display: grid;
+        gap: 16px;
+        margin-top: 0;
+      }
+      .connect-panel {
+        border: 1px solid var(--slate-200);
+        border-radius: 20px;
+        background: white;
+        padding: 20px;
+      }
+      .connect-section .connect-panel {
+        width: 100%;
+      }
+      .connect-panel h3 {
+        margin: 0;
+        font-size: 20px;
+      }
+      .connect-panel p {
+        margin: 10px 0 0;
+        color: var(--slate-600);
+        font-size: 14px;
+        line-height: 1.7;
+      }
+      .panel-label {
+        margin: 0 0 8px;
+        color: var(--slate-500);
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .social-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        min-height: 52px;
+        border: 1px solid var(--slate-200);
+        border-radius: 14px;
+        background: white;
+        padding: 12px 14px;
+        color: var(--slate-950);
+        font-size: 14px;
+        font-weight: 800;
+        text-decoration: none;
+        transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+      }
+      .social-button:hover {
+        transform: translateY(-1px);
+        border-color: var(--slate-300);
+        box-shadow: 0 10px 18px rgba(15, 23, 42, 0.08);
+      }
+      .social-button.is-email {
+        justify-content: center;
+      }
+      .social-icon {
+        display: grid;
+        place-items: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 999px;
+        background: var(--slate-950);
+        color: white;
+        font-size: 12px;
+        font-weight: 900;
+        line-height: 1;
+      }
+      .social-icon svg, .header-social svg, .logo-dot svg {
+        width: 14px;
+        height: 14px;
+        fill: currentColor;
+      }
+      .logo-dot svg {
+        width: 22px;
+        height: 22px;
+      }
+      .social-note {
+        margin: 0;
+        color: var(--slate-600);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .founder-section {
+        border-top: 1px solid var(--slate-200);
+        background: white;
+        padding: 0 0 32px;
+      }
+      .founder-card {
+        display: grid;
+        gap: 16px;
+        border: 1px solid var(--slate-200);
+        border-radius: 20px;
+        background: white;
+        padding: 20px;
+      }
+      .connect-panels .founder-card {
+        margin-top: 0;
+      }
+      .founder-card h3 {
+        font-size: 22px;
+      }
+      .founder-card p {
+        margin: 8px 0 0;
+        color: var(--slate-600);
+        font-size: 14px;
+        line-height: 1.7;
+      }
+      .connect-subsection {
+        margin-top: 18px;
+        border-top: 1px solid var(--slate-200);
+        padding-top: 18px;
+      }
+      .founder-inline {
+        display: grid;
+        gap: 12px;
+      }
+      .founder-inline p {
+        margin: 0;
+      }
+      .header-socials {
+        display: none;
+        align-items: center;
+        gap: 8px;
+      }
+      .header-social {
+        display: grid;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        border: 1px solid var(--slate-200);
+        border-radius: 999px;
+        background: white;
+        color: var(--slate-950);
+        font-size: 12px;
+        font-weight: 900;
+        text-decoration: none;
+        transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+      }
+      .header-social:hover {
+        transform: translateY(-1px);
+        border-color: var(--slate-300);
+        box-shadow: 0 10px 18px rgba(15, 23, 42, 0.08);
+      }
+      form {
+        border: 1px solid var(--slate-200);
+        border-radius: 32px;
+        background: white;
+        padding: 20px;
+        box-shadow: 0 22px 42px rgba(15, 23, 42, 0.12);
+      }
+      .guarantee-banner {
+        border: 1px solid var(--emerald-200);
+        border-radius: 22px;
+        background: var(--emerald-50);
+        padding: 18px;
+        margin-bottom: 16px;
+      }
+      .guarantee-banner h3 {
+        margin: 0;
+        color: var(--slate-950);
+        font-size: 22px;
+      }
+      .guarantee-banner p {
+        margin: 8px 0 0;
+        color: var(--emerald-800);
+        font-size: 15px;
+        line-height: 1.6;
+        font-weight: 700;
+      }
+      .guarantee-banner .money {
+        color: var(--emerald-800);
+        font-weight: 950;
+      }
+      .step-form {
+        display: grid;
+        gap: 16px;
+      }
+      .step-progress {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+      .step-dot {
+        height: 6px;
+        border-radius: 999px;
+        background: var(--slate-200);
+      }
+      .step-dot.is-active {
+        background: var(--orange-500);
+      }
+      .step-panel {
+        display: none;
+        gap: 16px;
+      }
+      .step-panel.is-active {
+        display: grid;
+      }
+      .step-kicker {
+        color: var(--slate-500);
+        font-size: 12px;
+        font-weight: 950;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .step-title {
+        margin: 4px 0 0;
+        font-size: clamp(24px, 4vw, 34px);
+        line-height: 1.08;
+      }
+      .step-help {
+        margin: 6px 0 0;
+        color: var(--slate-600);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .tile-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .need-tile {
+        position: relative;
+        display: grid;
+        gap: 10px;
+        min-height: 118px;
+        border: 1px solid var(--slate-200);
+        border-radius: 18px;
+        background: var(--slate-50);
+        padding: 16px;
+        cursor: pointer;
+        transition: border-color 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
+      }
+      .need-tile input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+      .need-tile span {
+        margin: 0;
+      }
+      .need-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        justify-self: center;
+        width: 34px;
+        height: 34px;
+        font-size: 30px;
+        line-height: 1;
+        text-align: center;
+      }
+      .custom-need-icon svg {
+        display: block;
+        width: 34px;
+        height: 34px;
+        filter: drop-shadow(0 2px 2px rgba(15, 23, 42, 0.14));
+      }
+      .need-name {
+        color: var(--slate-950);
+        font-size: 16px;
+        font-weight: 950;
+      }
+      .need-tile:has(input:checked) {
+        border-color: var(--orange-500);
+        background: #fff7ed;
+        box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.12);
+      }
+      .pax-grid {
+        display: grid;
+        gap: 10px;
+      }
+      .pax-option {
+        width: 100%;
+        min-height: 58px;
+        border: 1px solid var(--slate-200);
+        border-radius: 16px;
+        background: white;
+        color: var(--slate-950);
+        font: inherit;
+        font-size: 16px;
+        font-weight: 950;
+        text-align: left;
+        padding: 16px;
+        cursor: pointer;
+      }
+      .pax-option:hover,
+      .pax-option.is-selected {
+        border-color: var(--orange-500);
+        background: #fff7ed;
+      }
+      .step-actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .step-next,
+      .step-back {
+        min-height: 54px;
+        border-radius: 14px;
+        border: 1px solid var(--slate-200);
+        padding: 14px 18px;
+        font: inherit;
+        font-weight: 950;
+        cursor: pointer;
+      }
+      .step-next {
+        flex: 1;
+        border-color: var(--orange-500);
+        background: var(--orange-500);
+        color: white;
+      }
+      .step-next:disabled {
+        cursor: not-allowed;
+        opacity: 0.45;
+      }
+      .step-back {
+        background: white;
+        color: var(--slate-700);
+      }
+      .lead-fields {
+        display: grid;
+        gap: 14px;
+      }
+      .lead-fields label span {
+        font-size: 13px;
+      }
+      fieldset {
+        margin: 0 0 18px;
+        padding: 18px;
+        border: 1px solid var(--slate-200);
+        border-radius: 18px;
+        background: var(--slate-50);
+      }
+      legend {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 14px;
+        border: 1px solid var(--slate-200);
+        border-radius: 999px;
+        background: white;
+        padding: 7px 12px;
+        color: var(--slate-950);
+        font-size: 14px;
+        font-weight: 950;
+        letter-spacing: 0.02em;
+      }
+      legend::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--orange-500);
+      }
+      .form-grid { display: grid; gap: 16px; }
+      label span {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--slate-800);
+        font-size: 14px;
+        font-weight: 900;
+      }
+      input, textarea {
+        width: 100%;
+        border: 1px solid var(--slate-300);
+        border-radius: 12px;
+        background: white;
+        padding: 13px 16px;
+        color: var(--slate-950);
+        font: inherit;
+        outline: none;
+      }
+      input::placeholder,
+      textarea::placeholder {
+        color: var(--slate-400);
+      }
+      input:focus, textarea:focus {
+        border-color: var(--orange-500);
+        box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.12);
+      }
+      .check-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        text-align: left;
+        gap: 12px;
+        margin-top: 12px;
+        padding: 2px 0 0;
+      }
+      .check-row input {
+        flex: 0 0 auto;
+        width: 16px;
+        margin-top: 3px;
+      }
+      .setup-copy {
+        display: grid;
+        gap: 4px;
+        flex: 1;
+        min-width: 0;
+        margin-bottom: 0;
+      }
+      .setup-copy strong {
+        color: var(--slate-950);
+        font-size: 14px;
+        font-weight: 900;
+      }
+      .setup-copy small {
+        color: var(--slate-500);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+      .setup-copy small .setup-extra {
+        display: none;
+      }
+      .hero-contact-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 14px;
+      }
+      .submit { width: 100%; padding: 16px 24px; font-size: 18px; }
+      .submit-note {
+        margin: 12px 0 0;
+        color: var(--slate-500);
+        font-size: 13px;
+        line-height: 1.6;
+        text-align: center;
+      }
+      footer {
+        border-top: 1px solid var(--slate-200);
+        padding: 28px 16px;
+      }
+      footer p { margin: 0; color: var(--slate-600); font-size: 14px; }
+      footer strong { color: var(--slate-950); }
+      .footer-wrap {
+        display: grid;
+        gap: 18px;
+        text-align: left;
+      }
+      .footer-meta {
+        display: grid;
+        gap: 8px;
+      }
+      .footer-meta strong {
+        display: block;
+        font-size: 18px;
+      }
+      .footer-sub {
+        color: var(--slate-600);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .docs {
+        margin-top: 4px;
+        color: var(--slate-500);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .copyright {
+        color: var(--slate-500);
+        font-size: 13px;
+      }
+      .mobile-bar {
+        position: fixed;
+        inset: auto 0 0;
+        z-index: 50;
+        border-top: 1px solid var(--slate-200);
+        background: white;
+        padding: 12px;
+        box-shadow: 0 -8px 30px rgba(15, 23, 42, 0.12);
+      }
+      .mobile-bar .cta { width: 100%; }
+
+      @media (min-width: 768px) {
+        .page { padding-bottom: 0; }
+        section { padding: 80px 0; }
+        .hero-grid { grid-template-columns: 1fr 0.96fr; padding: 80px 0; align-items: center; }
+        .photo-card { margin-top: 64px; }
+        .split { grid-template-columns: 1.15fr 0.85fr; align-items: center; }
+        .cards-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .cards-4 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .catalog-card { flex-basis: 300px; }
+        .areas { margin-top: 16px; }
+        .testimonials { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .connect-wrap { grid-template-columns: 0.82fr 1.18fr; align-items: start; }
+        .connect-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .contact-card .connect-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+        .contact-card .social-button {
+          min-height: 48px;
+          padding: 10px 10px;
+          font-size: 13px;
+        }
+        .contact-card .social-icon {
+          width: 24px;
+          height: 24px;
+        }
+        .connect-panels { grid-template-columns: 1fr; }
+        .tile-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        .service-contact-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .founder-card { grid-template-columns: 1fr; }
+        .founder-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .logos { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+        .form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .span-2 { grid-column: span 2; }
+        .mobile-bar { display: none; }
+        .header-socials { display: flex; }
+        .footer-wrap { grid-template-columns: 1fr auto; align-items: start; }
+      }
+      @media (min-width: 1024px) {
+        .catalog-card { flex-basis: 310px; }
+        .quote-grid { grid-template-columns: 0.85fr 1.15fr; }
+        .connect-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .contact-card .connect-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .founder-links { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      }
+    </style>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position:absolute;left:-9999px;overflow:hidden" aria-hidden="true" focusable="false">
+      <symbol id="icon-facebook" viewBox="0 0 24 24">
+        <path d="M13.5 22v-8h2.7l.5-3h-3.2V9.1c0-.9.3-1.6 1.7-1.6H17V4.8c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.4V11H7.5v3h2.8v8h3.2Z"/>
+      </symbol>
+      <symbol id="icon-viber" viewBox="0 0 24 24">
+        <path d="M12 2C6.5 2 3 5.4 3 10.4c0 3.1 1.4 5.4 4 6.7V22l3.3-2.1c.6.1 1.1.1 1.7.1 5.5 0 9-3.4 9-8.4S17.5 2 12 2Zm4.4 10.8c-.2.5-1 1-1.6 1.1-.4.1-.9.1-1.6-.1-.4-.1-.9-.3-1.5-.6-2.3-1-3.8-3.2-4-3.4-.1-.2-.9-1.2-.9-2.3 0-1.1.6-1.7.8-1.9.2-.2.4-.2.6-.2h.5c.2 0 .3 0 .4.4.2.4.7 1.5.8 1.7.1.1.1.3 0 .4-.1.2-.1.3-.2.4l-.4.4c-.2.2-.2.3 0 .6.3.5 1.1 1.7 2.7 2.6.2.1.4.1.5-.1l.4-.5c.2-.2.3-.2.5-.1.2.1 1.4.6 1.6.7.2.1.4.2.4.3.1.1.1.6-.1 1.1Z"/>
+      </symbol>
+      <symbol id="icon-email" viewBox="0 0 24 24">
+        <path d="M3 6.8A1.8 1.8 0 0 1 4.8 5h14.4A1.8 1.8 0 0 1 21 6.8v10.4a1.8 1.8 0 0 1-1.8 1.8H4.8A1.8 1.8 0 0 1 3 17.2V6.8Zm1.7.1v.4L12 12l7.3-4.7v-.4a.2.2 0 0 0-.2-.2H4.9a.2.2 0 0 0-.2.2Zm14.6 2.4-5.8 3.7a2.6 2.6 0 0 1-2.8 0L4.7 9.3v7.9c0 .1.1.2.2.2h14.2c.1 0 .2-.1.2-.2V9.3Z"/>
+      </symbol>
+      <symbol id="icon-tiktok" viewBox="0 0 24 24">
+        <path d="M16.6 3c.4 2.4 1.8 3.9 4.1 4.1v3.2a7.5 7.5 0 0 1-4-1.2v5.9c0 3.6-2.4 6-5.9 6-3.1 0-5.5-2.2-5.5-5.2 0-3.5 3-5.8 6.5-5.1V14c-1.5-.5-3.1.2-3.1 1.8 0 1.2.9 2 2.1 2 1.4 0 2.4-.8 2.4-2.8V3h3.4Z"/>
+      </symbol>
+      <symbol id="icon-instagram" viewBox="0 0 24 24">
+        <path d="M7.2 2.8h9.6a4.4 4.4 0 0 1 4.4 4.4v9.6a4.4 4.4 0 0 1-4.4 4.4H7.2a4.4 4.4 0 0 1-4.4-4.4V7.2a4.4 4.4 0 0 1 4.4-4.4Zm0 2A2.4 2.4 0 0 0 4.8 7.2v9.6a2.4 2.4 0 0 0 2.4 2.4h9.6a2.4 2.4 0 0 0 2.4-2.4V7.2a2.4 2.4 0 0 0-2.4-2.4H7.2Zm4.8 3.1a4.1 4.1 0 1 1 0 8.2 4.1 4.1 0 0 1 0-8.2Zm0 2a2.1 2.1 0 1 0 0 4.2 2.1 2.1 0 0 0 0-4.2Zm4.4-2.4a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Z"/>
+      </symbol>
+      <symbol id="icon-youtube" viewBox="0 0 24 24">
+        <path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.7 4.6 12 4.6 12 4.6s-5.7 0-7.5.5a3 3 0 0 0-2.1 2.1C2 9 2 12 2 12s0 3 .4 4.8a3 3 0 0 0 2.1 2.1c1.8.5 7.5.5 7.5.5s5.7 0 7.5-.5a3 3 0 0 0 2.1-2.1C22 15 22 12 22 12s0-3-.4-4.8ZM10 15.4V8.6l5.8 3.4L10 15.4Z"/>
+      </symbol>
+      <symbol id="icon-erh" viewBox="0 0 24 24">
+        <path d="M12 5.2 5.4 11h13.2L12 5.2Zm0 1.9 3 2.7H9l3-2.7Z"/>
+        <path d="M6.1 12.1h11.8v1.4H6.1v-1.4Zm5.2.8h1.4v4.5h-1.4v-4.5Z"/>
+        <path d="M7.1 13.8h2.6v1.1H8.1v2.4h-1v-3.5Zm7.2 0h2.6v3.5h-1v-2.4h-1.6v-1.1Z"/>
+        <path d="M5.9 18h12.2v1.2H5.9V18Z"/>
+      </symbol>
+      <symbol id="need-icon-table" viewBox="0 0 48 48">
+        <rect x="7" y="14" width="34" height="8" rx="3" fill="#f8fafc" stroke="#334155" stroke-width="1.7"/>
+        <path d="M16 22 10 38M32 22l6 16M20 22l-1 15M28 22l1 15" stroke="#1e293b" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M11 38h7M30 38h8" stroke="#1e293b" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M10 15.2h28" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="need-icon-tent" viewBox="0 0 48 48">
+        <path d="M5 25 24 9l19 16H5Z" fill="#f8fafc" stroke="#334155" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M8 25h32v12H8V25Z" fill="#ffffff" stroke="#334155" stroke-width="1.8"/>
+        <path d="M24 9v28M14 25v12M34 25v12" stroke="#94a3b8" stroke-width="1.8"/>
+        <path d="M8 25c5 3 10 3 16 0 6 3 11 3 16 0" fill="none" stroke="#f97316" stroke-width="2.3" stroke-linecap="round"/>
+        <path d="M7 37h34" stroke="#1e293b" stroke-width="2" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="need-icon-fan" viewBox="0 0 48 48">
+        <circle cx="24" cy="17" r="12" fill="#f8fafc" stroke="#334155" stroke-width="1.8"/>
+        <circle cx="24" cy="17" r="3" fill="#475569"/>
+        <path d="M24 14c4-7 10-2 6 3-3 3-5 2-6 0Zm2 5c8 1 7 8 1 7-4-.7-4-3-3-6Zm-4-1c-5 6-11 2-7-3 3-3 5-2 7 1Z" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+        <path d="M24 29v9M17 40h14M20 38l-4 5M28 38l4 5" stroke="#1e293b" stroke-width="2.3" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="need-icon-cover" viewBox="0 0 48 48">
+        <ellipse cx="24" cy="13" rx="15" ry="6" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.6"/>
+        <path d="M9 14h30l-3 24c-5 3-19 3-24 0L9 14Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M13 17c1 6 1 13-.6 20M20 18c.8 7 .5 14-1 22M28 18c-.8 7-.5 14 1 22M35 17c-1 6-1 13 .6 20" stroke="#cbd5e1" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M10 37c6 4 22 4 28 0" fill="none" stroke="#f8fafc" stroke-width="2" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="need-icon-stanchions" viewBox="0 0 48 48">
+        <path d="M9 34h30l-5 6H4l5-6Z" fill="#dc2626"/>
+        <path d="M10 30c8-8 20 8 28 0" fill="none" stroke="#dc2626" stroke-width="3" stroke-linecap="round"/>
+        <path d="M11 14v22M37 14v22" stroke="#b45309" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="11" cy="12" r="3" fill="#facc15" stroke="#92400e" stroke-width="1.4"/>
+        <circle cx="37" cy="12" r="3" fill="#facc15" stroke="#92400e" stroke-width="1.4"/>
+        <path d="M6 38h10M32 38h10" stroke="#92400e" stroke-width="2.4" stroke-linecap="round"/>
+      </symbol>
+    </svg>
+    <main class="page">
+      <header class="header">
+        <div class="container header-inner">
+          <a class="logo" href="#top">
+            <span class="logo-shell"><span class="logo-dot"><img class="logo-img" src="assets/397071950_122097075758108334_2558136750477123222_n.jpg" alt="" /></span></span>
+            <span>
+              <p class="logo-title">Events Rental Hub</p>
+            </span>
+          </a>
+          <div class="header-actions">
+            <div class="header-socials" aria-label="Events Rental Hub social links">
+              <a class="header-social" href="https://linktr.ee/eventsrentalhub" target="_blank" rel="noopener noreferrer" aria-label="Events Rental Hub Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-facebook"></use></svg></a>
+              <a class="header-social smart-contact" href="tel:+639164645579" data-phone="+639164645579" data-agent="Events Rental Hub" aria-label="Message Events Rental Hub on Viber"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-viber"></use></svg></a>
+              <a class="header-social" href="mailto:erh.rental@gmail.com" aria-label="Email Events Rental Hub"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-email"></use></svg></a>
+            </div>
+            <a class="cta" href="#quote">Get My Free Quote</a>
+          </div>
+        </div>
+      </header>
+
+      <section id="top" class="hero">
+        <div class="container hero-grid">
+          <div class="hero-main">
+            <div class="trust-badge"><span>✓</span><strong>Trusted for 1,000+ events across Metro Manila & South Luzon</strong></div>
+            <h1>Event-Ready Equipment. Zero Delays. 100% Corporate-Ready.</h1>
+            <p class="hero-copy">Your event deserves a reliable partner. We provide the exact items you need, delivered on schedule, backed by complete Business Permits, DTI, BIR, and PhilGEPS documentation so you can celebrate with total confidence.</p>
+            <div class="hero-actions">
+              <a class="cta" href="#quote">Request a Free Quote</a>
+              <p class="microcopy">⚡ Fast replies • On-time delivery guarantee • Corporate-ready documents</p>
+            </div>
+          </div>
+          <aside class="photo-card">
+            <div class="photo" role="img" aria-label="Sample event setup with chair rentals"></div>
+            <div class="photo-note">
+              <a class="cta" href="#quote" style="width: 100%;">Ask for a Quote</a>
+            </div>
+            <div class="hero-contact-list">
+              <a class="dispatcher-card smart-contact" href="tel:+639164645579" data-phone="+639164645579" data-agent="Events Rental Hub Team" aria-label="Message Our Team Directly on Viber or phone">
+                <span class="dispatcher-main">
+                  <span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-viber"></use></svg></span>
+                  <span class="dispatcher-copy">
+                    <strong>Message Our Team Directly</strong>
+                    <span>Rush booking? Skip the form. Get a reply in under 5 minutes.</span>
+                  </span>
+                </span>
+                <span class="dispatcher-action">Chat now</span>
+              </a>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <div class="split">
+            <div>
+              <h2>Tired of late deliveries, dirty chairs, and uncoordinated suppliers?</h2>
+            </div>
+            <div class="soft-panel">
+              <p>Planning an event is already stressful. You shouldn’t have to worry about suppliers arriving late, delivering damaged equipment, or failing to provide the documents you need.</p>
+            </div>
+          </div>
+          <h3 style="margin-top: 40px;">The Hidden Cost of Bad Suppliers:</h3>
+          <div class="cards-3">
+            <article class="issue-card"><strong><span class="issue-mark">×</span> Late Deliveries</strong><p>Your entire event schedule gets delayed, leaving you scrambling and stressed before guests even arrive.</p></article>
+            <article class="issue-card"><strong><span class="issue-mark">×</span> Dirty & Damaged Items</strong><p>Tarnishes your reputation and makes your setup look cheap and unprofessional to your guests or bosses.</p></article>
+            <article class="issue-card"><strong><span class="issue-mark">×</span> Missing Documentation</strong><p>Your corporate booking becomes harder to process.</p></article>
+          </div>
+          <div class="success-banner"><span class="success-mark">✓</span><span>Events Rental Hub gives you peace of mind with reliable coordination, event-ready rentals, and proper documentation for private and corporate events.</span></div>
+        </div>
+      </section>
+
+      <section class="guarantee-band">
+        <div class="container">
+          <div class="guarantee-wrap">
+            <div class="guarantee-highlight"><span class="success-mark">✓</span><span>Guaranteed Delivery Protection</span></div>
+            <h2>On-Time Delivery Guarantee</h2>
+            <p class="section-copy">
+              If we miss the agreed load-in time due to our own delay, we apply an automatic refund based on how late we are.
+            </p>
+
+            <div class="cards-3 guarantee-cards">
+              <article class="guarantee-card">
+                <span class="guarantee-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M5 8h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2Z"/><path d="M7 8V6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"/><path d="M12 11v6"/><path d="M9.5 13h5"/><path d="M10 17h3a2 2 0 0 0 0-4h-2a2 2 0 0 1 0-4h3"/></svg>
+                </span>
+                <div><h3>₱500 Refund</h3><p>For every 15 minutes late due to our team’s delay.</p></div>
+              </article>
+
+              <article class="guarantee-card">
+                <span class="guarantee-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 17h.01M12 17h.01"/></svg>
+                </span>
+                <div><h3>Agreed Load-In Time</h3><p>The guarantee is based on the confirmed schedule in your booking details.</p></div>
+              </article>
+
+              <article class="guarantee-card">
+                <span class="guarantee-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M12 3 19 6v5c0 4.5-2.7 8.4-7 10-4.3-1.6-7-5.5-7-10V6l7-3Z"/><path d="m8.8 12.2 2.1 2.1 4.4-4.8"/></svg>
+                </span>
+                <div><h3>No Chasing</h3><p>If we are late because of our own delay, the refund is applied automatically.</p></div>
+              </article>
+            </div>
+
+            <p class="microcopy" style="margin-top: 18px;">
+              <strong>Guarantee Terms:</strong> Applies to confirmed bookings with finalized delivery details and clear venue access. Delays outside our control, such as venue restrictions, blocked access, severe weather, traffic incidents, or last-minute client-side changes, are excluded.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="catalog-band">
+        <div class="container">
+          <div>
+            <h2>Our Event Inventory</h2>
+            <p class="section-copy">Foldable tables, monobloc chairs, Tiffany chairs, cocktail tables, tents, industrial fans, carpets, TVs, and more - clean, well-maintained, and ready for your next event.</p>
+          </div>
+          <div class="catalog-grid" id="catalog"></div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <div class="service-panel">
+            <h2>Where We Deliver</h2>
+            <p class="section-copy" style="color: #cbd5e1;">Proudly supplying 1,000+ events across Metro Manila and South Luzon.</p>
+            <div class="areas" id="areas"></div>
+            <div class="service-contact-wrap">
+              <p class="service-contact-copy">Don't see your city? Contact our team directly and we’ll confirm nearby-area coverage for your event location.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="proof-band">
+        <div class="container">
+          <div class="center">
+            <h2>Trusted by Corporate Partners</h2>
+          </div>
+          <div class="testimonials" style="margin-top: 40px;">
+            <article class="testimonial"><p>"Smooth process from quote to pull-out. Delivery was on-time and the setup looked clean and professional."</p><small>Corporate Admin Team</small></article>
+            <article class="testimonial"><p>"Great communication and reliable coordination with the venue. We got all documents we needed."</p><small>Procurement Officer</small></article>
+            <article class="testimonial"><p>"Items arrived event-ready and complete. Highly recommended for school and private events."</p><small>Event Organizer</small></article>
+          </div>
+          <div class="logos">
+            <div class="logo-box">Logo 1</div>
+            <div class="logo-box">Logo 2</div>
+            <div class="logo-box">Logo 3</div>
+            <div class="logo-box">Logo 4</div>
+            <div class="logo-box">Logo 5</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="quote">
+        <div class="container quote-grid">
+          <div>
+            <h2>Get a Quote in 3 Taps</h2>
+            <p class="section-copy">No long item list required. Tell us what you need, estimate the guest count, and leave the details needed for logistics and official quotation.</p>
+            <div class="contact-card">
+              <div class="contact-row">
+                <span class="row-title">Urgent Booking?</span>
+                <a class="dispatcher-card smart-contact" href="tel:+639164645579" data-phone="+639164645579" data-agent="Events Rental Hub Team" aria-label="Message Our Team Directly on Viber or phone">
+                  <span class="dispatcher-main">
+                    <span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-viber"></use></svg></span>
+                    <span class="dispatcher-copy">
+                      <strong>Message Our Team Directly</strong>
+                      <span>Rush booking? Skip the form. Get a reply in under 5 minutes.</span>
+                    </span>
+                  </span>
+                  <span class="dispatcher-action">Chat now</span>
+                </a>
+              </div>
+              <div class="contact-row">
+                <span class="row-title">Connect With Us</span>
+                <p class="row-subtext">Browse updates, message the team, or send your inquiry by email.</p>
+                <div class="connect-actions">
+                  <a class="social-button" href="https://linktr.ee/eventsrentalhub" target="_blank" rel="noopener noreferrer"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-facebook"></use></svg></span><span>Facebook</span></a>
+                  <a class="social-button smart-contact" href="tel:+639164645579" data-phone="+639164645579" data-agent="Events Rental Hub"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-viber"></use></svg></span><span>Viber</span></a>
+                  <a class="social-button is-email" href="mailto:erh.rental@gmail.com"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-email"></use></svg></span><span>Email</span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <form id="availability-form">
+            <div class="guarantee-banner">
+              <h3>On-Time Delivery Guarantee</h3>
+              <p>
+                If we miss the agreed load-in time due to our own delay, we apply a
+                <span class="money">₱500 refund</span> for every 15 minutes late.
+              </p>
+            </div>
+            <div class="step-form">
+              <div class="step-progress" aria-label="Quote form progress">
+                <span class="step-dot is-active" data-progress="1"></span>
+                <span class="step-dot" data-progress="2"></span>
+                <span class="step-dot" data-progress="3"></span>
+              </div>
+
+              <div class="step-panel is-active" data-step="1">
+                <div>
+                  <p class="step-kicker">Step 1 of 3</p>
+                  <h3 class="step-title">What do you need?</h3>
+                  <p class="step-help">Tap all that apply. You can still finalize quantities with our team after we check availability.</p>
+                </div>
+                <div class="tile-grid">
+                  <label class="need-tile"><input type="checkbox" name="needs" value="Chairs" /><span class="need-icon">🪑</span><span class="need-name">Chairs</span></label>
+                  <label class="need-tile"><input type="checkbox" name="needs" value="Tables" /><span class="need-icon custom-need-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#need-icon-table"></use></svg></span><span class="need-name">Tables</span></label>
+                  <label class="need-tile"><input type="checkbox" name="needs" value="Tents" /><span class="need-icon custom-need-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#need-icon-tent"></use></svg></span><span class="need-name">Tents</span></label>
+                  <label class="need-tile"><input type="checkbox" name="needs" value="Cooling / Fans" /><span class="need-icon custom-need-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#need-icon-fan"></use></svg></span><span class="need-name">Cooling / Fans</span></label>
+                  <label class="need-tile"><input type="checkbox" name="needs" value="Covers & Styling" /><span class="need-icon custom-need-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#need-icon-cover"></use></svg></span><span class="need-name">Covers &amp; Styling</span></label>
+                  <label class="need-tile"><input type="checkbox" name="needs" value="Stanchions and Carpets" /><span class="need-icon custom-need-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#need-icon-stanchions"></use></svg></span><span class="need-name">Stanchions and Carpets</span></label>
+                  <label class="need-tile"><input type="checkbox" name="needs" value="Screens & Displays" /><span class="need-icon">📺</span><span class="need-name">Screens &amp; Displays</span></label>
+                </div>
+                <div class="step-actions">
+                  <button class="step-next" type="button" data-next="2" disabled>Next: Guest Count ›</button>
+                </div>
+              </div>
+
+              <div class="step-panel" data-step="2">
+                <div>
+                  <p class="step-kicker">Step 2 of 3</p>
+                  <h3 class="step-title">How many pax?</h3>
+                  <p class="step-help">Choose the closest estimate. This helps us recommend quantities faster.</p>
+                </div>
+                <div class="pax-grid">
+                  <button class="pax-option" type="button" data-pax="Under 50 pax">Under 50 pax</button>
+                  <button class="pax-option" type="button" data-pax="50 - 150 pax">50 - 150 pax</button>
+                  <button class="pax-option" type="button" data-pax="150 - 300 pax">150 - 300 pax</button>
+                  <button class="pax-option" type="button" data-pax="300+ Corporate">300+ Corporate</button>
+                </div>
+                <div class="step-actions">
+                  <button class="step-back" type="button" data-back="1">‹ Back</button>
+                </div>
+              </div>
+
+              <div class="step-panel" data-step="3">
+                <div>
+                  <p class="step-kicker">Step 3 of 3</p>
+                  <h3 class="step-title">Where should we send the quote?</h3>
+                  <p class="step-help">Bare minimum details only so we can check logistics and send the official quotation.</p>
+                </div>
+                <div class="lead-fields">
+                  <label><span>City / Delivery Area</span><input name="city" list="city-options" placeholder="e.g. Parañaque, Makati, Dasmariñas" required /></label>
+                  <datalist id="city-options">
+                    <option value="Manila"></option>
+                    <option value="Cavite"></option>
+                    <option value="Parañaque"></option>
+                    <option value="Makati"></option>
+                    <option value="Tagaytay"></option>
+                    <option value="Laguna"></option>
+                  </datalist>
+                  <label><span>Event Date</span><input name="eventDate" type="date" required /></label>
+                  <label><span>Phone / Viber Number</span><input name="phone" type="tel" placeholder="e.g. 0917 123 4567" required /></label>
+                  <label><span>Email Address <small style="color: var(--slate-500); font-weight: 800;">For Formal BIR/PhilGEPS Quote</small></span><input name="email" type="email" placeholder="e.g. bookings@company.com" required /></label>
+                </div>
+                <div class="step-actions">
+                  <button class="step-back" type="button" data-back="2">‹ Back</button>
+                </div>
+                <button class="cta submit" type="submit">Check Availability &amp; Lock In Pricing</button>
+                <p class="submit-note">⚡ Replies via Viber/Email in under 15 minutes.</p>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section id="connect" class="connect-section">
+        <div class="container">
+          <div class="connect-wrap">
+            <div class="connect-copy">
+              <h2>Connect With Us</h2>
+              <p class="section-copy">Choose the best channel for your inquiry. For quotations, we recommend using the quote form first so we can review your event date, location, and item list properly. For rush bookings, message any team member directly through Facebook or Viber.</p>
+              <div class="connect-points" aria-label="Contact highlights">
+                <div class="connect-point"><span>✓</span>Latest setup photos and business updates</div>
+                <div class="connect-point"><span>✓</span>Direct Facebook, Viber, or email</div>
+                <div class="connect-point"><span>✓</span>Watch our journey as we build Events Rental Hub</div>
+              </div>
+            </div>
+            <div>
+              <div class="connect-panels">
+                <div class="connect-panel">
+                  <p class="panel-label">Events Rental Hub</p>
+                  <h3>Official Page and Contact Details</h3>
+                  <p>See our latest event setups, check updates, and message the team directly through your preferred platform.</p>
+                  <div class="connect-actions" style="margin-top: 16px;">
+                    <a class="social-button" href="https://linktr.ee/eventsrentalhub" target="_blank" rel="noopener noreferrer" aria-label="Open Events Rental Hub Facebook page"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-facebook"></use></svg></span><span>Facebook</span></a>
+                    <a class="social-button smart-contact" href="tel:+639164645579" data-phone="+639164645579" data-agent="Events Rental Hub" aria-label="Message Events Rental Hub on Viber"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-viber"></use></svg></span><span>Viber</span></a>
+                    <a class="social-button is-email" href="mailto:erh.rental@gmail.com" aria-label="Email Events Rental Hub"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-email"></use></svg></span><span>Email</span></a>
+                  </div>
+                </div>
+                <div class="founder-card">
+                  <div>
+                    <p class="panel-label">Founder’s journey</p>
+                    <h3>Kwento ni Long (Mark Mercado)</h3>
+                    <p>Want to see the business behind the scenes? Follow Kwento ni Long where Mark shares the journey, lessons, systems, and real stories behind building Events Rental Hub.</p>
+                  </div>
+                  <div class="founder-links">
+                    <a class="social-button" href="https://linktr.ee/mdotmercado" target="_blank" rel="noopener noreferrer" aria-label="Open Long Mercado Facebook page"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-facebook"></use></svg></span><span>Facebook</span></a>
+                    <a class="social-button" href="https://linktr.ee/mdotmercado" target="_blank" rel="noopener noreferrer" aria-label="Open Long Mercado Instagram"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-instagram"></use></svg></span><span>Instagram</span></a>
+                    <a class="social-button" href="https://linktr.ee/mdotmercado" target="_blank" rel="noopener noreferrer" aria-label="Open Long Mercado TikTok"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-tiktok"></use></svg></span><span>TikTok</span></a>
+                    <a class="social-button" href="https://linktr.ee/mdotmercado" target="_blank" rel="noopener noreferrer" aria-label="Open Long Mercado YouTube"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-youtube"></use></svg></span><span>YouTube</span></a>
+                  </div>
+                </div>
+              </div>
+              <p class="social-note" style="margin-top: 14px;">Quotation requests still stay front and center. These links make it easier to verify the business and message the team directly.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer-band">
+        <div class="container footer-wrap">
+          <div class="footer-meta">
+            <p><strong>Events Rental Hub</strong></p>
+            <p class="footer-sub">Tables, chairs, and event rentals for private and corporate bookings across Metro Manila and nearby South Luzon areas.</p>
+            <p class="docs">Registered: DTI | BIR | Business Permit | PhilGEPS</p>
+            <p class="copyright">© 2025 Events Rental Hub. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
+
+      <div class="mobile-bar"><a class="cta" href="#quote">Get My Free Quote</a></div>
+    </main>
+
+    <script>
+      const inventory = [
+        { name: "Gold Tiffany Chairs", photos: [
+          "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=900&q=80"
+        ]},
+        { name: "Monoblock Chairs", photos: [
+          "https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=900&q=80"
+        ]},
+        { name: "Round Tables", photos: [
+          "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1478146896981-b80fe463b330?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&w=900&q=80"
+        ]},
+        { name: "Lifetime Tables (4ft/6ft)", photos: [
+          "https://images.unsplash.com/photo-1464207687429-7505649dae38?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80"
+        ]},
+        { name: "Cocktail Tables w/ Spandex", photos: [
+          "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&w=900&q=80"
+        ]},
+        { name: "Kiddie Tables & Chairs", photos: [
+          "https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=900&q=80"
+        ]},
+        { name: "Chair/Table Covers (Katrina/Spandex)", photos: [
+          "https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=80"
+        ]},
+        { name: "IWATA Industrial Fans", photos: [
+          "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=900&q=80"
+        ]},
+        { name: "Gold/Titanium Stanchions", photos: [
+          "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=900&q=80"
+        ]},
+        { name: "Red & Black Carpets", photos: [
+          "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&w=900&q=80"
+        ]},
+        { name: "Retractable Tents (3x3m & 3x4.5m)", photos: [
+          "https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80"
+        ]},
+        { name: '42" Smart TV with 360° Stand', photos: [
+          "https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1461151304267-38535e780c79?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1496171367470-9ed9a91ea931?auto=format&fit=crop&w=900&q=80"
+        ]}
+      ];
+      const areas = [
+        "Manila",
+        "Cavite",
+        "Parañaque",
+        "Las Piñas",
+        "Laguna",
+        "Makati",
+        "Mandaluyong",
+        "Pasay",
+        "Pasig",
+        "Quezon City",
+        "San Juan",
+        "Tagaytay",
+        "Taguig"
+      ];
+
+      const renderDots = (count, activeIndex) =>
+        Array.from({ length: count }, (_, index) => `<span class="catalog-dot${index === activeIndex ? " is-active" : ""}"></span>`).join("");
+
+      document.getElementById("catalog").innerHTML = inventory.map((item, itemIndex) => `
+        <article class="catalog-card">
+          <div class="catalog-art" data-art style="background-image: url('${item.photos[0]}')">
+            <div class="catalog-overlay"></div>
+            <div class="catalog-controls">
+              <button class="catalog-arrow" type="button" data-direction="-1" data-card="${itemIndex}" aria-label="Previous photo">‹</button>
+              <div class="catalog-dots" data-dots>${renderDots(item.photos.length, 0)}</div>
+              <button class="catalog-arrow" type="button" data-direction="1" data-card="${itemIndex}" aria-label="Next photo">›</button>
+            </div>
+          </div>
+          <h3>${item.name}</h3>
+        </article>
+      `).join("");
+
+      document.getElementById("areas").innerHTML = areas.map((area) => `<span class="pill">📍 ${area}</span>`).join("");
+
+      document.querySelectorAll(".catalog-card").forEach((card, cardIndex) => {
+        const art = card.querySelector("[data-art]");
+        const dots = card.querySelector("[data-dots]");
+        let activePhoto = 0;
+
+        card.querySelectorAll(".catalog-arrow").forEach((button) => {
+          button.addEventListener("click", () => {
+            const direction = Number(button.dataset.direction);
+            const photos = inventory[cardIndex].photos;
+            activePhoto = (activePhoto + direction + photos.length) % photos.length;
+            art.style.backgroundImage = `url('${photos[activePhoto]}')`;
+            dots.innerHTML = renderDots(photos.length, activePhoto);
+          });
+        });
+      });
+
+      const quoteForm = document.getElementById("availability-form");
+      const formState = { needs: [], pax: "" };
+
+      const setStep = (stepNumber) => {
+        document.querySelectorAll("[data-step]").forEach((panel) => {
+          panel.classList.toggle("is-active", panel.dataset.step === String(stepNumber));
+        });
+        document.querySelectorAll("[data-progress]").forEach((dot) => {
+          dot.classList.toggle("is-active", Number(dot.dataset.progress) <= Number(stepNumber));
+        });
+      };
+
+      const syncNeeds = () => {
+        formState.needs = Array.from(document.querySelectorAll('input[name="needs"]:checked')).map((input) => input.value);
+        const nextButton = document.querySelector('[data-next="2"]');
+        if (nextButton) {
+          nextButton.disabled = formState.needs.length === 0;
+        }
+      };
+
+      document.querySelectorAll('input[name="needs"]').forEach((input) => {
+        input.addEventListener("change", syncNeeds);
+      });
+      document.querySelectorAll(".need-tile").forEach((tile) => {
+        tile.addEventListener("click", (event) => {
+          const input = tile.querySelector('input[name="needs"]');
+          if (!input || event.target === input) return;
+          event.preventDefault();
+          input.checked = !input.checked;
+          input.dispatchEvent(new Event("change", { bubbles: true }));
+        });
+      });
+
+      document.querySelectorAll("[data-next]").forEach((button) => {
+        button.addEventListener("click", () => setStep(button.dataset.next));
+      });
+
+      document.querySelectorAll("[data-back]").forEach((button) => {
+        button.addEventListener("click", () => setStep(button.dataset.back));
+      });
+
+      document.querySelectorAll(".pax-option").forEach((button) => {
+        button.addEventListener("click", () => {
+          formState.pax = button.dataset.pax;
+          document.querySelectorAll(".pax-option").forEach((option) => option.classList.remove("is-selected"));
+          button.classList.add("is-selected");
+          setStep(3);
+        });
+      });
+
+      if (quoteForm) {
+        quoteForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const formData = new FormData(quoteForm);
+          const payload = {
+            needs: formState.needs,
+            guestCount: formState.pax,
+            city: formData.get("city"),
+            eventDate: formData.get("eventDate"),
+            phone: formData.get("phone"),
+            email: formData.get("email"),
+          };
+          window.erhLastLeadPayload = payload;
+
+          const subject = encodeURIComponent("Events Rental Hub Availability Request");
+          const body = encodeURIComponent([
+            "New availability request:",
+            "",
+            `Items needed: ${payload.needs.join(", ") || "Not selected"}`,
+            `Estimated guest count: ${payload.guestCount || "Not selected"}`,
+            `City / Delivery Area: ${payload.city}`,
+            `Event Date: ${payload.eventDate}`,
+            `Phone / Viber: ${payload.phone}`,
+            `Email: ${payload.email}`,
+          ].join("\n"));
+          window.location.href = `mailto:erh.rental@gmail.com?subject=${subject}&body=${body}`;
+        });
+      }
+
+      const isMobileDevice = () =>
+        /Android|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+        (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
+
+      const buildTelUrl = (phone) => `tel:${phone}`;
+      const buildViberUrl = (phone) => {
+        const normalized = phone.replace(/[^\d+]/g, "");
+        const withCountryCode = normalized.startsWith("+") ? normalized : `+${normalized}`;
+        return `viber://chat?number=${encodeURIComponent(withCountryCode)}`;
+      };
+
+      document.querySelectorAll(".smart-contact").forEach((link) => {
+        link.addEventListener("click", (event) => {
+          const phone = link.dataset.phone;
+          if (!phone || !isMobileDevice()) {
+            return;
+          }
+
+          event.preventDefault();
+
+          const viberUrl = buildViberUrl(phone);
+          const telUrl = buildTelUrl(phone);
+          let fallbackStep = 0;
+
+          window.location.href = viberUrl;
+
+          const fallbackToDialer = window.setTimeout(() => {
+            fallbackStep = 1;
+            window.location.href = telUrl;
+          }, 900);
+
+          const cancelFallbacks = () => {
+            window.clearTimeout(fallbackToDialer);
+            document.removeEventListener("visibilitychange", cancelOnHide);
+            window.removeEventListener("pagehide", cancelFallbacks);
+            window.removeEventListener("blur", cancelOnBlur);
+          };
+
+          const cancelOnHide = () => {
+            if (document.hidden) {
+              cancelFallbacks();
+            }
+          };
+
+          const cancelOnBlur = () => {
+            if (fallbackStep < 1) {
+              cancelFallbacks();
+            }
+          };
+
+          document.addEventListener("visibilitychange", cancelOnHide);
+          window.addEventListener("pagehide", cancelFallbacks, { once: true });
+          window.addEventListener("blur", cancelOnBlur, { once: true });
+        });
+      });
+
+    </script>
+  </body>
+</html>
