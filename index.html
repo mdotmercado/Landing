@@ -1896,7 +1896,8 @@
             `Phone / Viber: ${payload.phone}`,
             `Email: ${payload.email}`,
           ].join("\n"));
-          window.location.href = `mailto:erh.rental@gmail.com?subject=${subject}&body=${body}`;
+          const cc = encodeURIComponent("mdotmercado@gmail.com,kennethaudreydeocampo@gmail.com,sls.sonnysumalinog@gmail.com");
+          window.location.href = `mailto:erh.rental@gmail.com?cc=${cc}&subject=${subject}&body=${body}`;
         });
       }
 
