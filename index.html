@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Events Rental Hub Preview V1</title>
+    <title>Tables and Chairs Rental in Metro Manila & Cavite | Events Rental Hub</title>
+    <link rel="canonical" href="https://eventsrentalhub.com/" />
     <style>
       :root {
         --slate-950: #020617;
@@ -220,7 +221,7 @@
         border-radius: 24px;
         background:
           linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.15)),
-          url("https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1100&q=80") center / cover;
+          url("assets/hero/1_HERO.png") center / cover;
       }
       .photo::after {
         content: "Setup sample";
@@ -380,7 +381,7 @@
         background: rgba(2, 6, 23, 0.22);
       }
       .catalog-dot.is-active { background: var(--slate-950); }
-      .catalog-card h3 { padding: 16px; font-size: 16px; }
+      .catalog-card h3 { padding: 16px; font-size: 16px; text-align: center; }
       .service-panel {
         border-radius: 32px;
         background: var(--slate-950);
@@ -497,27 +498,45 @@
         background: white;
         padding: 20px;
       }
+      .testimonial {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      .testimonial p {
+        flex: 1;
+      }
       .testimonial small {
         display: block;
-        margin-top: 16px;
+        margin-top: auto;
+        padding-top: 16px;
         color: var(--slate-500);
         font-size: 12px;
         font-weight: 900;
         letter-spacing: 0.12em;
         text-transform: uppercase;
       }
-      .logos { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 24px; }
+      .logos {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 24px;
+      }
       .logo-box {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
         border: 1px solid var(--slate-200);
-        border-radius: 12px;
-        background: var(--slate-100);
-        padding: 16px 12px;
-        color: var(--slate-500);
+        border-radius: 999px;
+        background: white;
+        padding: 10px 16px;
+        color: var(--slate-700);
         text-align: center;
-        font-size: 12px;
-        font-weight: 950;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
+        font-size: 13px;
+        font-weight: 900;
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
       }
       .guarantee-wrap {
         border: 1px solid var(--emerald-200);
@@ -1273,7 +1292,6 @@
         .service-contact-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         .founder-card { grid-template-columns: 1fr; }
         .founder-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        .logos { grid-template-columns: repeat(5, minmax(0, 1fr)); }
         .form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .span-2 { grid-column: span 2; }
         .mobile-bar { display: none; }
@@ -1357,7 +1375,7 @@
       <header class="header">
         <div class="container header-inner">
           <a class="logo" href="#top">
-            <span class="logo-shell"><span class="logo-dot"><img class="logo-img" src="assets/397071950_122097075758108334_2558136750477123222_n.jpg" alt="" /></span></span>
+            <span class="logo-shell"><span class="logo-dot"><img class="logo-img" src="assets/logo/ERH LOGO.png" alt="" /></span></span>
             <span class="logo-copy">
               <p class="logo-title">Events Rental Hub</p>
               <p class="logo-subtitle">Metro Manila | Cavite</p>
@@ -1365,7 +1383,7 @@
           </a>
           <div class="header-actions">
             <div class="header-socials" aria-label="Events Rental Hub social links">
-              <a class="header-social" href="https://linktr.ee/eventsrentalhub" target="_blank" rel="noopener noreferrer" aria-label="Events Rental Hub Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-facebook"></use></svg></a>
+              <a class="header-social" href="https://www.facebook.com/eventsrentalhubph" target="_blank" rel="noopener noreferrer" aria-label="Events Rental Hub Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-facebook"></use></svg></a>
               <a class="header-social smart-contact" href="tel:+639164645579" data-phone="+639164645579" data-agent="Events Rental Hub" aria-label="Message Events Rental Hub on Viber"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-viber"></use></svg></a>
               <a class="header-social" href="mailto:erh.rental@gmail.com" aria-label="Email Events Rental Hub"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-email"></use></svg></a>
             </div>
@@ -1469,7 +1487,7 @@
         <div class="container">
           <div>
             <h2>Our Event Inventory</h2>
-            <p class="section-copy">Foldable tables, monobloc chairs, Tiffany chairs, cocktail tables, tents, industrial fans, carpets, TVs, and more - clean, well-maintained, and ready for your next event.</p>
+            <p class="section-copy">Lifetime tables, monobloc chairs, Tiffany chairs, cocktail tables, tents, industrial fans, stanchions, carpets, smart TVs, touch screen kiosks, and more - clean, well-maintained, and ready for your next event.</p>
           </div>
           <div class="catalog-grid" id="catalog"></div>
         </div>
@@ -1491,19 +1509,19 @@
       <section class="proof-band">
         <div class="container">
           <div class="center">
-            <h2>Trusted by Corporate Partners</h2>
+            <h2>Trusted for Corporate Events, School Programs, and Private Gatherings</h2>
           </div>
           <div class="testimonials" style="margin-top: 40px;">
-            <article class="testimonial"><p>"Smooth process from quote to pull-out. Delivery was on-time and the setup looked clean and professional."</p><small>Corporate Admin Team</small></article>
-            <article class="testimonial"><p>"Great communication and reliable coordination with the venue. We got all documents we needed."</p><small>Procurement Officer</small></article>
+            <article class="testimonial"><p>"Smooth process from quote to pull-out. Delivery was on-time and the setup looked clean and professional."</p><small>Corporate Client</small></article>
+            <article class="testimonial"><p>"Great communication and reliable coordination with the venue. We got all documents we needed."</p><small>Private Client</small></article>
             <article class="testimonial"><p>"Items arrived event-ready and complete. Highly recommended for school and private events."</p><small>Event Organizer</small></article>
           </div>
-          <div class="logos">
-            <div class="logo-box">Logo 1</div>
-            <div class="logo-box">Logo 2</div>
-            <div class="logo-box">Logo 3</div>
-            <div class="logo-box">Logo 4</div>
-            <div class="logo-box">Logo 5</div>
+          <div class="logos" aria-label="Event types served">
+            <div class="logo-box">Corporate Events</div>
+            <div class="logo-box">School Programs</div>
+            <div class="logo-box">Private Parties</div>
+            <div class="logo-box">Weddings &amp; Birthdays</div>
+            <div class="logo-box">Community Events</div>
           </div>
         </div>
       </section>
@@ -1531,7 +1549,7 @@
                 <span class="row-title">Connect With Us</span>
                 <p class="row-subtext">Browse updates, message the team, or send your inquiry by email.</p>
                 <div class="connect-actions">
-                  <a class="social-button" href="https://linktr.ee/eventsrentalhub" target="_blank" rel="noopener noreferrer"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-facebook"></use></svg></span><span>Facebook</span></a>
+                  <a class="social-button" href="https://www.facebook.com/eventsrentalhubph" target="_blank" rel="noopener noreferrer"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-facebook"></use></svg></span><span>Facebook</span></a>
                   <a class="social-button smart-contact" href="tel:+639164645579" data-phone="+639164645579" data-agent="Events Rental Hub"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-viber"></use></svg></span><span>Viber</span></a>
                   <a class="social-button is-email" href="mailto:erh.rental@gmail.com"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-email"></use></svg></span><span>Email</span></a>
                 </div>
@@ -1565,7 +1583,7 @@
                   <label class="need-tile"><input type="checkbox" name="needs" value="Cooling / Fans" /><span class="need-icon custom-need-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#need-icon-fan"></use></svg></span><span class="need-name">Cooling / Fans</span></label>
                   <label class="need-tile"><input type="checkbox" name="needs" value="Covers & Styling" /><span class="need-icon custom-need-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#need-icon-cover"></use></svg></span><span class="need-name">Covers &amp; Styling</span></label>
                   <label class="need-tile"><input type="checkbox" name="needs" value="Stanchions and Carpets" /><span class="need-icon custom-need-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#need-icon-stanchions"></use></svg></span><span class="need-name">Stanchions and Carpets</span></label>
-                  <label class="need-tile"><input type="checkbox" name="needs" value="Screens & Displays" /><span class="need-icon">📺</span><span class="need-name">Screens &amp; Displays</span></label>
+                  <label class="need-tile"><input type="checkbox" name="needs" value="Smart TV and Touch Screen Kiosk" /><span class="need-icon">📺</span><span class="need-name">Smart TV and Touch Screen Kiosk</span></label>
                 </div>
                 <div class="step-actions">
                   <button class="step-next" type="button" data-next="2" disabled>Next: Guest Count ›</button>
@@ -1593,7 +1611,7 @@
                 <div>
                   <p class="step-kicker">Step 3 of 3</p>
                   <h3 class="step-title">Where should we send the quote?</h3>
-                  <p class="step-help">Bare minimum details only so we can check logistics and send the official quotation.</p>
+                  <p class="step-help">Share your event details so our team can confirm availability, delivery logistics, and prepare your formal quotation.</p>
                 </div>
                 <div class="lead-fields">
                   <label><span>City / Delivery Area</span><input name="city" list="city-options" placeholder="e.g. Parañaque, Makati, Dasmariñas" required /></label>
@@ -1612,7 +1630,7 @@
                 <div class="step-actions">
                   <button class="step-back" type="button" data-back="2">‹ Back</button>
                 </div>
-                <button class="cta submit" type="submit">Check Availability &amp; Lock In Pricing</button>
+                <button class="cta submit" type="submit">Check Availability &amp; Get A Quote</button>
                 <p class="submit-note">⚡ Replies via Viber/Email in under 15 minutes.</p>
               </div>
             </div>
@@ -1639,7 +1657,7 @@
                   <h3>Official Page and Contact Details</h3>
                   <p>See our latest event setups, check updates, and message the team directly through your preferred platform.</p>
                   <div class="connect-actions" style="margin-top: 16px;">
-                    <a class="social-button" href="https://linktr.ee/eventsrentalhub" target="_blank" rel="noopener noreferrer" aria-label="Open Events Rental Hub Facebook page"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-facebook"></use></svg></span><span>Facebook</span></a>
+                    <a class="social-button" href="https://www.facebook.com/eventsrentalhubph" target="_blank" rel="noopener noreferrer" aria-label="Open Events Rental Hub Facebook page"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-facebook"></use></svg></span><span>Facebook</span></a>
                     <a class="social-button smart-contact" href="tel:+639164645579" data-phone="+639164645579" data-agent="Events Rental Hub" aria-label="Message Events Rental Hub on Viber"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-viber"></use></svg></span><span>Viber</span></a>
                     <a class="social-button is-email" href="mailto:erh.rental@gmail.com" aria-label="Email Events Rental Hub"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-email"></use></svg></span><span>Email</span></a>
                   </div>
@@ -1651,10 +1669,10 @@
                     <p>Want to see the business behind the scenes? Follow Kwento ni Long where Mark shares the journey, lessons, systems, and real stories behind building Events Rental Hub.</p>
                   </div>
                   <div class="founder-links">
-                    <a class="social-button" href="https://linktr.ee/mdotmercado" target="_blank" rel="noopener noreferrer" aria-label="Open Long Mercado Facebook page"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-facebook"></use></svg></span><span>Facebook</span></a>
-                    <a class="social-button" href="https://linktr.ee/mdotmercado" target="_blank" rel="noopener noreferrer" aria-label="Open Long Mercado Instagram"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-instagram"></use></svg></span><span>Instagram</span></a>
-                    <a class="social-button" href="https://linktr.ee/mdotmercado" target="_blank" rel="noopener noreferrer" aria-label="Open Long Mercado TikTok"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-tiktok"></use></svg></span><span>TikTok</span></a>
-                    <a class="social-button" href="https://linktr.ee/mdotmercado" target="_blank" rel="noopener noreferrer" aria-label="Open Long Mercado YouTube"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-youtube"></use></svg></span><span>YouTube</span></a>
+                    <a class="social-button" href="https://www.facebook.com/p/Kwento-ni-Long-61556134832965/" target="_blank" rel="noopener noreferrer" aria-label="Open Long Mercado Facebook page"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-facebook"></use></svg></span><span>Facebook</span></a>
+                    <a class="social-button" href="https://www.instagram.com/mdotmercado/" target="_blank" rel="noopener noreferrer" aria-label="Open Long Mercado Instagram"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-instagram"></use></svg></span><span>Instagram</span></a>
+                    <a class="social-button" href="https://www.tiktok.com/@kwentonilong" target="_blank" rel="noopener noreferrer" aria-label="Open Long Mercado TikTok"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-tiktok"></use></svg></span><span>TikTok</span></a>
+                    <a class="social-button" href="https://www.youtube.com/@KwentoniLong?app=desktop" target="_blank" rel="noopener noreferrer" aria-label="Open Long Mercado YouTube"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-youtube"></use></svg></span><span>YouTube</span></a>
                   </div>
                 </div>
               </div>
@@ -1681,64 +1699,73 @@
     <script>
       const inventory = [
         { name: "Gold Tiffany Chairs", photos: [
-          "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=900&q=80"
+          "assets/tiffany-chairs/Tiffany Chairs Thumbnail.jpg",
+          "assets/tiffany-chairs/Tiffany Chairs 1.jpg",
+          "assets/tiffany-chairs/Tiffany Chairs 2.jpg"
         ]},
         { name: "Monoblock Chairs", photos: [
-          "https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=900&q=80"
+          "assets/monoblock-chairs/Monobloc Chairs Thumbnail.jpg",
+          "assets/monoblock-chairs/Monobloc Chairs.jpg",
+          "assets/monoblock-chairs/Monobloc Chairs 1.jpg",
+          "assets/monoblock-chairs/Monobloc Chairs 2.jpg",
+          "assets/monoblock-chairs/Monobloc Chairs3.jpg",
+          "assets/monoblock-chairs/Monobloc11.jpg",
+          "assets/monoblock-chairs/Monobloc11.webp"
         ]},
         { name: "Round Tables", photos: [
-          "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1478146896981-b80fe463b330?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&w=900&q=80"
+          "assets/round-tables/Round Tables Thumbnail.jpg",
+          "assets/round-tables/Round Tables 1.jpg",
+          "assets/round-tables/Round Tables 2.jpg",
+          "assets/round-tables/Round Tables 3.jpg",
+          "assets/round-tables/Round Tables1.webp",
+          "assets/round-tables/Round Tables2.jpg"
         ]},
-        { name: "Lifetime Tables (4ft/6ft)", photos: [
-          "https://images.unsplash.com/photo-1464207687429-7505649dae38?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80"
+        { name: "Lifetime Tables (4FT & 6FT)", photos: [
+          "assets/lifetime-tables/Rectangular Tables Thumbnail.jpg",
+          "assets/lifetime-tables/Lifetime Tables.jpg",
+          "assets/lifetime-tables/Lifetime Tables 1.jpg",
+          "assets/lifetime-tables/Lifetime Tbables.jpg"
         ]},
-        { name: "Cocktail Tables w/ Spandex", photos: [
-          "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&w=900&q=80"
+        { name: "Cocktail Tables", photos: [
+          "assets/cocktail-tables/Cocktail Tables Thumbnail.jpg",
+          "assets/cocktail-tables/Cocktail Tables.jpg",
+          "assets/cocktail-tables/Cocktail Tables 1.jpg",
+          "assets/cocktail-tables/Cocktail Tables 2.jpg",
+          "assets/cocktail-tables/cocktail tables1.jpg",
+          "assets/cocktail-tables/Cocktail.png"
         ]},
         { name: "Kiddie Tables & Chairs", photos: [
-          "https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=900&q=80"
+          "assets/kiddie-tables-chairs/Kiddie Chairs Thumbnail.jpg",
+          "assets/kiddie-tables-chairs/Kiddie Chairs 1.jpg"
         ]},
-        { name: "Chair/Table Covers (Katrina/Spandex)", photos: [
-          "https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=80"
+        { name: "Iwata Industrial Fans", photos: [
+          "assets/industrial-fans/Iwata Fans Thumbnail.jpg",
+          "assets/industrial-fans/Iwata industrial fans.png",
+          "assets/industrial-fans/Iwata Fans 2.png"
         ]},
-        { name: "IWATA Industrial Fans", photos: [
-          "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=900&q=80"
+        { name: "Stanchions and Carpets", photos: [
+          "assets/stanchions-carpets/Gold Stanchions Thumbnail.jpg",
+          "assets/stanchions-carpets/Gold Stanchions 1.jpg",
+          "assets/stanchions-carpets/Stanchions.png",
+          "assets/stanchions-carpets/Carpet.png",
+          "assets/stanchions-carpets/Carpets.png"
         ]},
-        { name: "Gold/Titanium Stanchions", photos: [
-          "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=900&q=80"
+        { name: "Retractable Tents", photos: [
+          "assets/tents/Retractable Tents Thumbnail.jpg",
+          "assets/tents/Tents 1.jpg",
+          "assets/tents/Tents 2.jpg",
+          "assets/tents/Tents 3.jpg",
+          "assets/tents/TENTS.jpg",
+          "assets/tents/TENTS1.jpg"
         ]},
-        { name: "Red & Black Carpets", photos: [
-          "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&w=900&q=80"
-        ]},
-        { name: "Retractable Tents (3x3m & 3x4.5m)", photos: [
-          "https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80"
-        ]},
-        { name: '42" Smart TV with 360° Stand', photos: [
-          "https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1461151304267-38535e780c79?auto=format&fit=crop&w=900&q=80",
-          "https://images.unsplash.com/photo-1496171367470-9ed9a91ea931?auto=format&fit=crop&w=900&q=80"
+        { name: "Smart TV and Touch Screen Kiosks", photos: [
+          "assets/tv-kiosks/TV thumbnail.jpg",
+          "assets/tv-kiosks/TV.png",
+          "assets/tv-kiosks/TV1.png",
+          "assets/tv-kiosks/TV2.png",
+          "assets/tv-kiosks/Kiosk.png",
+          "assets/tv-kiosks/Kiosk1.png",
+          "assets/tv-kiosks/Kiosk 2.png"
         ]}
       ];
       const areas = [
