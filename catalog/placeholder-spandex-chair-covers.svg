@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">Spandex chair covers placeholder</title>
+  <desc id="desc">Placeholder illustration for spandex chair cover catalog items.</desc>
+  <rect width="1200" height="900" fill="#fffaf2"/>
+  <rect x="0" y="610" width="1200" height="290" fill="#eadfce"/>
+  <g stroke="#242220" stroke-width="8">
+    <rect x="220" y="245" width="250" height="430" rx="52" fill="#111111"/>
+    <rect x="730" y="245" width="250" height="430" rx="52" fill="#ffffff"/>
+    <rect x="255" y="555" width="180" height="210" rx="32" fill="#111111"/>
+    <rect x="765" y="555" width="180" height="210" rx="32" fill="#ffffff"/>
+  </g>
+  <path d="M250 288 C305 345 382 345 440 288" fill="none" stroke="#ffffff" stroke-width="10" opacity="0.45"/>
+  <path d="M760 288 C815 345 892 345 950 288" fill="none" stroke="#c9bca9" stroke-width="10"/>
+  <text x="600" y="835" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" fill="#242220">Photo coming soon</text>
+</svg>
