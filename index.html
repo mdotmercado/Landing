@@ -1358,6 +1358,96 @@
       }
       .mobile-bar .cta { width: 100%; }
 
+
+      .messenger-panel {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        z-index: 120;
+        width: min(310px, calc(100vw - 32px));
+        border: 1px solid var(--slate-200);
+        border-radius: 20px;
+        background: white;
+        padding: 16px;
+        box-shadow: 0 20px 55px rgba(15, 23, 42, 0.20);
+      }
+      .messenger-panel[hidden], .messenger-launch[hidden] { display: none; }
+      .messenger-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+      .messenger-avatar {
+        display: block;
+        width: 44px;
+        height: 44px;
+        overflow: hidden;
+        border: 1px solid var(--slate-200);
+        border-radius: 999px;
+        background: white;
+      }
+      .messenger-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .messenger-minimize {
+        display: grid;
+        place-items: center;
+        width: 32px;
+        height: 32px;
+        border: 0;
+        border-radius: 999px;
+        background: var(--slate-100);
+        color: var(--slate-700);
+        font: inherit;
+        font-size: 18px;
+        font-weight: 950;
+        cursor: pointer;
+      }
+      .messenger-panel h2 { margin: 12px 0 0; font-size: 16px; }
+      .messenger-panel > p { margin: 8px 0 0; color: var(--slate-600); font-size: 14px; line-height: 1.6; }
+      .messenger-start {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        margin-top: 20px;
+        border-radius: 14px;
+        background: #0866ff;
+        padding: 13px 16px;
+        color: white;
+        font-size: 14px;
+        font-weight: 950;
+        text-decoration: none;
+      }
+      .messenger-start:hover { background: #075ce5; text-decoration: none; }
+      .messenger-powered {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        margin-top: 12px;
+        color: var(--slate-500);
+        font-size: 10px;
+        font-weight: 800;
+      }
+      .messenger-icon { width: 20px; height: 20px; fill: currentColor; }
+      .messenger-powered .messenger-icon { width: 14px; height: 14px; color: var(--slate-950); }
+      .messenger-launch {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        z-index: 120;
+        display: grid;
+        place-items: center;
+        width: 56px;
+        height: 56px;
+        border: 0;
+        border-radius: 999px;
+        background: #0866ff;
+        color: white;
+        box-shadow: 0 12px 30px rgba(8, 102, 255, 0.35);
+        cursor: pointer;
+      }
+      @media (max-width: 767px) {
+        .messenger-panel { right: 16px; bottom: 84px; }
+        .messenger-launch { right: 16px; bottom: 84px; }
+      }
+
       @media (min-width: 768px) {
         .page { padding-bottom: 0; }
         section { padding: 80px 0; }
@@ -1802,6 +1892,27 @@
         </div>
       </footer>
 
+
+      <aside class="messenger-panel" id="erh-messenger-panel" aria-label="Messenger chat">
+        <div class="messenger-head">
+          <span class="messenger-avatar"><img src="assets/logo/ERH LOGO.png" alt="Events Rental Hub" /></span>
+          <button class="messenger-minimize" id="erh-messenger-minimize" type="button" aria-label="Minimize Messenger chat">−</button>
+        </div>
+        <h2>Chat with Events Rental Hub</h2>
+        <p>Hi! How can our team help you?</p>
+        <a class="messenger-start" href="https://m.me/159936080535754" target="_blank" rel="noopener noreferrer">
+          <svg class="messenger-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 2C6.4 2 2 6.1 2 11.5c0 3.1 1.5 5.9 4 7.6V22l2.8-1.5c1 .3 2.1.5 3.2.5 5.6 0 10-4.1 10-9.5S17.6 2 12 2Zm1 12.8-2.5-2.7-4.9 2.7 5.4-5.7 2.5 2.7L18.4 9 13 14.8Z" /></svg>
+          <span>Start chat</span>
+        </a>
+        <div class="messenger-powered">
+          <svg class="messenger-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 2C6.4 2 2 6.1 2 11.5c0 3.1 1.5 5.9 4 7.6V22l2.8-1.5c1 .3 2.1.5 3.2.5 5.6 0 10-4.1 10-9.5S17.6 2 12 2Zm1 12.8-2.5-2.7-4.9 2.7 5.4-5.7 2.5 2.7L18.4 9 13 14.8Z" /></svg>
+          <span>Powered by Messenger</span>
+        </div>
+      </aside>
+      <button class="messenger-launch" id="erh-messenger-launch" type="button" aria-label="Chat with Events Rental Hub on Messenger" hidden>
+        <svg class="messenger-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 2C6.4 2 2 6.1 2 11.5c0 3.1 1.5 5.9 4 7.6V22l2.8-1.5c1 .3 2.1.5 3.2.5 5.6 0 10-4.1 10-9.5S17.6 2 12 2Zm1 12.8-2.5-2.7-4.9 2.7 5.4-5.7 2.5 2.7L18.4 9 13 14.8Z" /></svg>
+      </button>
+
       <div class="mobile-bar"><a class="cta" href="#quote">Get My Free Quote</a></div>
     </main>
 
@@ -2195,5 +2306,23 @@
       });
 
     </script>
+
+    <script>
+      (() => {
+        const panel = document.getElementById("erh-messenger-panel");
+        const launch = document.getElementById("erh-messenger-launch");
+        const minimize = document.getElementById("erh-messenger-minimize");
+        if (!panel || !launch || !minimize) return;
+        minimize.addEventListener("click", () => {
+          panel.hidden = true;
+          launch.hidden = false;
+        });
+        launch.addEventListener("click", () => {
+          launch.hidden = true;
+          panel.hidden = false;
+        });
+      })();
+    </script>
+
   </body>
 </html>
