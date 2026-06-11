@@ -71,6 +71,59 @@
         align-items: center;
         gap: 10px;
       }
+      .site-menu-wrap {
+        position: relative;
+        flex: 0 0 auto;
+      }
+      .site-menu-toggle {
+        display: grid;
+        place-items: center;
+        width: 46px;
+        height: 46px;
+        border: 1px solid var(--slate-200);
+        border-radius: 12px;
+        background: white;
+        color: var(--slate-950);
+        cursor: pointer;
+      }
+      .site-menu-toggle::-webkit-details-marker { display: none; }
+      .site-menu-toggle::marker { content: ""; }
+      .site-menu-toggle:hover,
+      .site-menu-wrap[open] .site-menu-toggle {
+        border-color: var(--slate-300);
+        background: var(--slate-50);
+      }
+      .site-menu-icon { display: grid; gap: 4px; }
+      .site-menu-icon span {
+        display: block;
+        width: 18px;
+        height: 2px;
+        border-radius: 999px;
+        background: currentColor;
+      }
+      .site-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        z-index: 80;
+        display: none;
+        min-width: 220px;
+        overflow: hidden;
+        border: 1px solid var(--slate-200);
+        border-radius: 16px;
+        background: white;
+        box-shadow: 0 18px 42px rgba(15, 23, 42, 0.16);
+      }
+      .site-menu-wrap[open] .site-menu { display: grid; }
+      .site-menu a {
+        display: block;
+        padding: 18px 20px;
+        color: var(--slate-950);
+        font-size: 15px;
+        font-weight: 900;
+        text-decoration: none;
+      }
+      .site-menu a:hover { background: var(--slate-50); }
       .logo {
         display: flex;
         align-items: center;
@@ -317,22 +370,52 @@
         font-weight: 950;
       }
       .catalog-band, .proof-band, .guarantee-band, .faq-band, .footer-band { background: var(--slate-50); }
+      .catalog-heading {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 18px;
+      }
+      .catalog-copy-wrap { max-width: 980px; }
+      .catalog-tools {
+        display: flex;
+        flex: 0 0 auto;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 4px;
+      }
+      .catalog-browse {
+        display: grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        border: 1px solid var(--slate-200);
+        border-radius: 999px;
+        background: white;
+        color: var(--slate-950);
+        font-size: 24px;
+        font-weight: 900;
+        line-height: 1;
+        cursor: pointer;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.10);
+      }
+      .catalog-browse:hover {
+        background: var(--slate-50);
+        border-color: var(--slate-300);
+      }
       .catalog-grid {
         display: flex;
         gap: 16px;
         margin-top: 28px;
         overflow-x: auto;
-        padding: 4px 2px 14px;
+        padding: 4px 2px 12px;
         scroll-snap-type: x mandatory;
-        scrollbar-width: thin;
-        scrollbar-color: var(--slate-300) transparent;
+        scrollbar-width: none;
         -webkit-overflow-scrolling: touch;
       }
-      .catalog-grid::-webkit-scrollbar { height: 7px; }
-      .catalog-grid::-webkit-scrollbar-track { background: transparent; }
-      .catalog-grid::-webkit-scrollbar-thumb { border-radius: 999px; background: var(--slate-300); }
+      .catalog-grid::-webkit-scrollbar { display: none; }
       .catalog-card {
-        flex: 0 0 min(78vw, 300px);
+        flex: 0 0 min(72vw, 248px);
         scroll-snap-align: start;
         overflow: hidden;
         border: 1px solid var(--slate-200);
@@ -344,7 +427,7 @@
         position: relative;
         display: grid;
         place-items: center;
-        aspect-ratio: 4 / 3;
+        aspect-ratio: 3 / 4;
         background: linear-gradient(135deg, var(--slate-200), var(--slate-100));
         color: var(--slate-500);
         font-weight: 900;
@@ -392,7 +475,7 @@
         background: rgba(2, 6, 23, 0.22);
       }
       .catalog-dot.is-active { background: var(--slate-950); }
-      .catalog-card h3 { padding: 16px; font-size: 16px; text-align: center; }
+      .catalog-card h3 { padding: 14px 12px 16px; font-size: 16px; line-height: 1.25; text-align: center; }
       .service-panel {
         border-radius: 32px;
         background: var(--slate-950);
@@ -1283,7 +1366,7 @@
         .split { grid-template-columns: 1.15fr 0.85fr; align-items: center; }
         .cards-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         .cards-4 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-        .catalog-card { flex-basis: 300px; }
+        .catalog-card { flex-basis: 248px; }
         .areas { margin-top: 16px; }
         .testimonials { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         .connect-wrap { grid-template-columns: 0.82fr 1.18fr; align-items: start; }
@@ -1314,7 +1397,7 @@
         .logo-subtitle { display: none; }
       }
       @media (min-width: 1024px) {
-        .catalog-card { flex-basis: 310px; }
+        .catalog-card { flex-basis: 260px; }
         .quote-grid { grid-template-columns: 0.85fr 1.15fr; }
         .connect-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         .contact-card .connect-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -1399,6 +1482,15 @@
               <a class="header-social" href="mailto:erh.rental@gmail.com" aria-label="Email Events Rental Hub"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-email"></use></svg></a>
             </div>
             <a class="cta" href="#quote">Get My Free Quote</a>
+            <details class="site-menu-wrap">
+              <summary class="site-menu-toggle" aria-label="Open navigation menu">
+                <span class="site-menu-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+              </summary>
+              <nav class="site-menu" aria-label="Main navigation">
+                <a href="catalog/">Our Catalog</a>
+                <a href="#event-setup">Our Event Setup</a>
+              </nav>
+            </details>
           </div>
         </div>
       </header>
@@ -1494,11 +1586,17 @@
         </div>
       </section>
 
-      <section class="catalog-band">
+      <section class="catalog-band" id="event-setup">
         <div class="container">
-          <div>
-            <h2>Our Event Inventory</h2>
-            <p class="section-copy">Lifetime tables, monobloc chairs, Tiffany chairs, cocktail tables, tents, industrial fans, stanchions, carpets, smart TVs, touch screen kiosks, and more - clean, well-maintained, and ready for your next event.</p>
+          <div class="catalog-heading">
+            <div class="catalog-copy-wrap">
+              <h2>Our Catalog</h2>
+              <p class="section-copy">Browse our event rental essentials — tables, chairs, fans, carpets, stanchions, and tents, including Lifetime Tables, Round Tables, Cocktail Tables, Kiddie Sets, Monobloc Chairs, Tiffany Chairs, Iwata Industrial Fans, Red Carpets, Gold Stanchions, Dome Tents, and Retractable Tents.</p>
+            </div>
+            <div class="catalog-tools" aria-label="Browse catalog items">
+              <button class="catalog-browse" type="button" data-catalog-scroll="-1" onclick="window.scrollCatalog(-1)" aria-label="Browse previous catalog items">‹</button>
+              <button class="catalog-browse" type="button" data-catalog-scroll="1" onclick="window.scrollCatalog(1)" aria-label="Browse next catalog items">›</button>
+            </div>
           </div>
           <div class="catalog-grid" id="catalog"></div>
         </div>
@@ -1709,75 +1807,190 @@
 
     <script>
       const inventory = [
-        { name: "Gold Tiffany Chairs", photos: [
-          "assets/tiffany-chairs/Tiffany Chairs Thumbnail.jpg",
-          "assets/tiffany-chairs/Tiffany Chairs 1.jpg",
-          "assets/tiffany-chairs/Tiffany Chairs 2.jpg"
-        ]},
-        { name: "Monobloc Chairs", photos: [
-          "assets/monoblock-chairs/Monobloc Chairs Thumbnail.jpg",
-          "assets/monoblock-chairs/Monobloc Chairs.jpg",
-          "assets/monoblock-chairs/Monobloc Chairs 1.jpg",
-          "assets/monoblock-chairs/Monobloc Chairs 2.jpg",
-          "assets/monoblock-chairs/Monobloc Chairs3.jpg",
-          "assets/monoblock-chairs/Monobloc11.jpg",
-          "assets/monoblock-chairs/Monobloc11.webp"
-        ]},
-        { name: "Round Tables", photos: [
-          "assets/round-tables/Round Tables Thumbnail.jpg",
-          "assets/round-tables/Round Tables 1.jpg",
-          "assets/round-tables/Round Tables 2.jpg",
-          "assets/round-tables/Round Tables 3.jpg",
-          "assets/round-tables/Round Tables1.webp",
-          "assets/round-tables/Round Tables2.jpg"
-        ]},
-        { name: "Lifetime Tables (4FT & 6FT)", photos: [
-          "assets/lifetime-tables/Rectangular Tables Thumbnail.jpg",
-          "assets/lifetime-tables/Lifetime Tables.jpg",
-          "assets/lifetime-tables/Lifetime Tables 1.jpg",
-          "assets/lifetime-tables/Lifetime Tbables.jpg"
-        ]},
-        { name: "Cocktail Tables", photos: [
-          "assets/cocktail-tables/Cocktail Tables Thumbnail.jpg",
-          "assets/cocktail-tables/Cocktail Tables.jpg",
-          "assets/cocktail-tables/Cocktail Tables 1.jpg",
-          "assets/cocktail-tables/Cocktail Tables 2.jpg",
-          "assets/cocktail-tables/cocktail tables1.jpg",
-          "assets/cocktail-tables/Cocktail.png"
-        ]},
-        { name: "Kiddie Tables & Chairs", photos: [
-          "assets/kiddie-tables-chairs/Kiddie Chairs Thumbnail.jpg",
-          "assets/kiddie-tables-chairs/Kiddie Chairs 1.jpg"
-        ]},
-        { name: "Iwata Industrial Fans", photos: [
-          "assets/industrial-fans/Iwata Fans Thumbnail.jpg",
-          "assets/industrial-fans/Iwata industrial fans.png",
-          "assets/industrial-fans/Iwata Fans 2.png"
-        ]},
-        { name: "Stanchions and Carpets", photos: [
-          "assets/stanchions-carpets/Gold Stanchions Thumbnail.jpg",
-          "assets/stanchions-carpets/Gold Stanchions 1.jpg",
-          "assets/stanchions-carpets/Stanchions.png",
-          "assets/stanchions-carpets/Carpet.png",
-          "assets/stanchions-carpets/Carpets.png"
-        ]},
-        { name: "Retractable Tents", photos: [
-          "assets/tents/Retractable Tents Thumbnail.jpg",
-          "assets/tents/Tents 1.jpg",
-          "assets/tents/Tents 2.jpg",
-          "assets/tents/Tents 3.jpg",
-          "assets/tents/TENTS.jpg",
-          "assets/tents/TENTS1.jpg"
-        ]},
-        { name: "Smart TV and Touch Screen Kiosks", photos: [
-          "assets/tv-kiosks/TV thumbnail.jpg",
-          "assets/tv-kiosks/TV.png",
-          "assets/tv-kiosks/TV1.png",
-          "assets/tv-kiosks/TV2.png",
-          "assets/tv-kiosks/Kiosk.png",
-          "assets/tv-kiosks/Kiosk1.png",
-          "assets/tv-kiosks/Kiosk 2.png"
-        ]}
+              {
+                      "name": "Lifetime Tables (6FT)",
+                      "photos": [
+                              "catalog/sample-photos-3x4/6FT%20Lifetime%20Tables%203x4.png",
+                              "catalog/assets/lifetime-tables/Lifetime Tables.jpg",
+                              "catalog/assets/lifetime-tables/Lifetime Tables 1.jpg",
+                              "catalog/assets/lifetime-tables/Lifetime Tbables.jpg"
+                      ]
+              },
+              {
+                      "name": "Lifetime Tables (4FT)",
+                      "photos": [
+                              "catalog/sample-photos-3x4/4FT%20Lifetime%20Tables%203x4.png",
+                              "catalog/assets/lifetime-tables/Lifetime Tables.jpg",
+                              "catalog/assets/lifetime-tables/Lifetime Tables 1.jpg",
+                              "catalog/assets/lifetime-tables/Lifetime Tbables.jpg"
+                      ]
+              },
+              {
+                      "name": "Round Tables (8 seater)",
+                      "photos": [
+                              "catalog/sample-photos-3x4/Round%20Table%203x4.png",
+                              "catalog/assets/round-tables/Round Tables 1.jpg",
+                              "catalog/assets/round-tables/Round Tables 2.jpg",
+                              "catalog/assets/round-tables/Round Tables 3.jpg",
+                              "catalog/assets/round-tables/Round Tables1.webp",
+                              "catalog/assets/round-tables/Round Tables2.jpg"
+                      ]
+              },
+              {
+                      "name": "Cocktail Tables",
+                      "photos": [
+                              "catalog/sample-photos-3x4/Cocktail%20Tables%203x4.png",
+                              "catalog/assets/cocktail-tables/Cocktail Tables.jpg",
+                              "catalog/assets/cocktail-tables/Cocktail Tables 1.jpg",
+                              "catalog/assets/cocktail-tables/Cocktail Tables 2.jpg",
+                              "catalog/assets/cocktail-tables/cocktail tables1.jpg",
+                              "catalog/assets/cocktail-tables/Cocktail.png"
+                      ]
+              },
+              {
+                      "name": "Kiddie Set",
+                      "photos": [
+                              "catalog/sample-photos-3x4/Kiddie%20Set%203x4.png",
+                              "catalog/assets/kiddie-tables-chairs/Kiddie Chairs 1.jpg"
+                      ]
+              },
+              {
+                      "name": "Monobloc",
+                      "photos": [
+                              "catalog/sample-photos-3x4/Monobloc%203x4.png",
+                              "catalog/assets/monoblock-chairs/Monobloc Chairs 2.jpg",
+                              "catalog/assets/monoblock-chairs/Monobloc Chairs3.jpg",
+                              "catalog/assets/monoblock-chairs/Monobloc Chairs.jpg"
+                      ]
+              },
+              {
+                      "name": "Tiffany Chairs",
+                      "photos": [
+                              "catalog/sample-photos-3x4/Gold%20Tiffany%20Chairs%203x4.png",
+                              "catalog/assets/tiffany-chairs/Tiffany Chairs 1.jpg",
+                              "catalog/assets/tiffany-chairs/Tiffany Chairs 2.jpg"
+                      ]
+              },
+              {
+                      "name": "Crystal Chair",
+                      "photos": [
+                              "catalog/sample-photos-3x4/Crystal%20Chair%20-%203x4.png"
+                      ]
+              },
+              {
+                      "name": "Gold Candice Chairs",
+                      "photos": [
+                              "catalog/sample-photos-3x4/Gold%20Candice%20Chairs%20-%203x4.png"
+                      ]
+              },
+              {
+                      "name": "Rattan Cane Back Chair",
+                      "photos": [
+                              "catalog/sample-photos-3x4/Rattan%20Cane%20Back%20Chair.ph%20-%203x4.png"
+                      ]
+              },
+              {
+                      "name": "Rustic Wooden Foldable Chair",
+                      "photos": [
+                              "catalog/sample-photos-3x4/Rustic%20Wooden%20Foldable%20Chair%20-%203x4.png"
+                      ]
+              },
+              {
+                      "name": "White Resin Chair",
+                      "photos": [
+                              "catalog/sample-photos-3x4/White%20Resin%20Chair%20-%203x4.png"
+                      ]
+              },
+              {
+                      "name": "Wooden Crossback Chairs",
+                      "photos": [
+                              "catalog/sample-photos-3x4/Wooden%20Crossback%20Chairs%20-%203x4.png"
+                      ]
+              },
+              {
+                      "name": "Iwata Air Coolers",
+                      "photos": [
+                              "catalog/sample-photos-3x4/Iwata%20Air%20Coolers%20-%203x4.png"
+                      ]
+              },
+              {
+                      "name": "Iwata Industrial Fans",
+                      "photos": [
+                              "catalog/sample-photos-3x4/Iwata%20Industrial%20Fans%20-%203x4.png"
+                      ]
+              },
+              {
+                      "name": "Red Carpets",
+                      "photos": [
+                              "catalog/sample-photos-3x4/Red%20Carpets%203x4.png",
+                              "catalog/assets/stanchions-carpets/Carpet.png",
+                              "catalog/assets/stanchions-carpets/Carpets.png",
+                              "catalog/assets/stanchions-carpets/Gold Stanchions 1.jpg"
+                      ]
+              },
+              {
+                      "name": "Gold Stanchions with Red Rope",
+                      "photos": [
+                              "catalog/sample-photos-3x4/Gold%20Stanchions%203x4.png",
+                              "catalog/assets/stanchions-carpets/Gold Stanchions 1.jpg",
+                              "catalog/assets/stanchions-carpets/Stanchions.png"
+                      ]
+              },
+              {
+                      "name": "Retractable Tents (White)",
+                      "photos": [
+                              "catalog/sample-photos-3x4/3x3%20Retractable%20Tent%20White%203x4.png",
+                              "catalog/sample-photos-3x4/3x4.5%20Retractable%20Tent%20White%203x4.png",
+                              "catalog/assets/tents/TENTS.jpg",
+                              "catalog/assets/tents/TENTS1.jpg",
+                              "catalog/assets/tents/Tents 1.jpg",
+                              "catalog/assets/tents/Tents 2.jpg",
+                              "catalog/assets/tents/Tents 3.jpg"
+                      ]
+              },
+              {
+                      "name": "Aircon Tent",
+                      "photos": [
+                              "catalog/sample-photos-3x4/Aircon%20Tent%20-%203x4.png"
+                      ]
+              },
+              {
+                      "name": "Aluminum Tent",
+                      "photos": [
+                              "catalog/sample-photos-3x4/Aluminum%20Tent%20-%203x4.png"
+                      ]
+              },
+              {
+                      "name": "Enclosed Aluminum tent",
+                      "photos": [
+                              "catalog/sample-photos-3x4/Enclosed%20Aluminum%20tent%20-%203x4.png"
+                      ]
+              },
+              {
+                      "name": "High Peak tent",
+                      "photos": [
+                              "catalog/sample-photos-3x4/High%20Peak%20tent%20-%203x4.png"
+                      ]
+              },
+              {
+                      "name": "Premium Heavy Duty Tent",
+                      "photos": [
+                              "catalog/sample-photos-3x4/Premium%20Heavy%20Duty%20Tent%20-%203x4.png"
+                      ]
+              },
+              {
+                      "name": "Transluscent Dome Tent",
+                      "photos": [
+                              "catalog/sample-photos-3x4/Transluscent%20Dome%20Tent%20-%203x4.png"
+                      ]
+              },
+              {
+                      "name": "White Dome Tent",
+                      "photos": [
+                              "catalog/sample-photos-3x4/white-dome-tent-fixed.png",
+                              "catalog/sample-photos/White%20Dome%20Tent.png"
+                      ]
+              }
       ];
       const areas = [
         "Manila",
@@ -1813,6 +2026,21 @@
       `).join("");
 
       document.getElementById("areas").innerHTML = areas.map((area) => `<span class="pill">📍 ${area}</span>`).join("");
+
+      const catalogGrid = document.getElementById("catalog");
+      window.scrollCatalog = (direction) => {
+        if (!catalogGrid) return;
+        const card = catalogGrid.querySelector(".catalog-card");
+        const scrollAmount = card ? card.getBoundingClientRect().width + 16 : 280;
+        const maxLeft = Math.max(0, catalogGrid.scrollWidth - catalogGrid.clientWidth);
+        const nextLeft = Math.max(0, Math.min(maxLeft, catalogGrid.scrollLeft + direction * scrollAmount));
+        catalogGrid.scrollLeft = nextLeft;
+      };
+      document.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-catalog-scroll]");
+        if (!button || button.hasAttribute("onclick")) return;
+        window.scrollCatalog(Number(button.dataset.catalogScroll));
+      });
 
       document.querySelectorAll(".catalog-card").forEach((card, cardIndex) => {
         const art = card.querySelector("[data-art]");
