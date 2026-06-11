@@ -16,6 +16,7 @@
     <link rel="canonical" href="https://eventsrentalhub.com/" />
     <link rel="icon" type="image/png" href="assets/logo/favicon.png?v=3" />
     <link rel="apple-touch-icon" href="assets/logo/favicon.png" />
+    <link rel="preload" as="image" href="assets/hero/hero-home.webp" fetchpriority="high" />
     <style>
       :root {
         --slate-950: #020617;
@@ -285,7 +286,7 @@
         border-radius: 24px;
         background:
           linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.15)),
-          url("assets/hero/1_HERO.png") center / cover;
+          url("assets/hero/hero-home.webp") center / cover;
       }
       .photo::after {
         content: "Setup sample";
@@ -1210,6 +1211,165 @@
       .lead-fields label span {
         font-size: 13px;
       }
+      .date-time-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(110px, 0.55fr);
+        gap: 10px;
+      }
+      .equipment-picker-wrap {
+        display: grid;
+        gap: 8px;
+      }
+      .equipment-options {
+        display: grid;
+        max-height: 280px;
+        gap: 8px;
+        overflow-y: auto;
+        border: 1px solid var(--slate-200);
+        border-radius: 16px;
+        background: var(--slate-50);
+        padding: 8px;
+      }
+      .equipment-option {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        width: 100%;
+        border: 0;
+        border-radius: 12px;
+        background: white;
+        padding: 12px;
+        color: var(--slate-950);
+        font: inherit;
+        font-size: 14px;
+        font-weight: 900;
+        text-align: left;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+      }
+      .equipment-option-main,
+      .selected-equipment-main {
+        display: flex;
+        min-width: 0;
+        align-items: center;
+        gap: 10px;
+      }
+      .equipment-option-image,
+      .selected-equipment-image {
+        flex: 0 0 auto;
+        width: 42px;
+        height: 42px;
+        border-radius: 9px;
+        background: var(--slate-100);
+        object-fit: cover;
+      }
+      .selected-equipment-image {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+      }
+      .equipment-option-name,
+      .selected-equipment-name {
+        min-width: 0;
+        overflow-wrap: anywhere;
+      }
+      .equipment-option-action {
+        flex: 0 0 auto;
+        border-radius: 8px;
+        background: #ffedd5;
+        padding: 6px 9px;
+        font-size: 11px;
+      }
+      .equipment-option:disabled {
+        cursor: default;
+        opacity: 0.55;
+      }
+      .selected-equipment {
+        border: 1px solid var(--slate-200);
+        border-radius: 16px;
+        background: white;
+        padding: 12px;
+      }
+      .selected-equipment h4 {
+        margin: 0;
+        font-size: 14px;
+      }
+      .selected-equipment-list {
+        display: grid;
+        gap: 8px;
+        margin: 10px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+      .selected-equipment-item {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto auto;
+        align-items: center;
+        gap: 8px;
+        border-radius: 12px;
+        background: var(--slate-50);
+        padding: 9px 10px;
+        color: var(--slate-950);
+        font-size: 13px;
+        font-weight: 900;
+      }
+      .quantity-control {
+        display: flex;
+        overflow: hidden;
+        border: 1px solid var(--slate-200);
+        border-radius: 8px;
+        background: white;
+      }
+      .quantity-control button {
+        width: 30px;
+        height: 30px;
+        border: 0;
+        background: white;
+        color: var(--slate-950);
+        font: inherit;
+        font-weight: 950;
+        cursor: pointer;
+      }
+      .quantity-control span {
+        display: grid;
+        min-width: 32px;
+        place-items: center;
+        border-right: 1px solid var(--slate-200);
+        border-left: 1px solid var(--slate-200);
+        font-size: 12px;
+      }
+      .remove-equipment {
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        background: var(--red-50);
+        padding: 7px 9px;
+        color: var(--red-700);
+        font: inherit;
+        font-size: 11px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+      .equipment-empty,
+      .quote-fee-note,
+      .equipment-validation {
+        margin: 8px 0 0;
+        color: var(--slate-500);
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1.6;
+      }
+      .quote-fee-note {
+        border: 1px solid var(--slate-200);
+        border-radius: 12px;
+        background: var(--slate-50);
+        padding: 10px 12px;
+      }
+      .equipment-validation {
+        display: none;
+        color: var(--red-700);
+      }
+      .equipment-validation.is-visible { display: block; }
       fieldset {
         margin: 0 0 18px;
         padding: 18px;
@@ -1246,7 +1406,7 @@
         font-size: 14px;
         font-weight: 900;
       }
-      input, textarea {
+      input, textarea, select {
         width: 100%;
         border: 1px solid var(--slate-300);
         border-radius: 12px;
@@ -1260,7 +1420,7 @@
       textarea::placeholder {
         color: var(--slate-400);
       }
-      input:focus, textarea:focus {
+      input:focus, textarea:focus, select:focus {
         border-color: var(--orange-500);
         box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.12);
       }
@@ -1355,8 +1515,14 @@
         background: white;
         padding: 12px;
         box-shadow: 0 -8px 30px rgba(15, 23, 42, 0.12);
+        transition: opacity 0.18s ease, transform 0.18s ease;
       }
       .mobile-bar .cta { width: 100%; }
+      .mobile-bar.is-hidden {
+        pointer-events: none;
+        opacity: 0;
+        transform: translateY(100%);
+      }
 
 
       .messenger-panel {
@@ -1446,6 +1612,86 @@
       @media (max-width: 767px) {
         .messenger-panel { right: 16px; bottom: 84px; }
         .messenger-launch { right: 16px; bottom: 84px; }
+        .mobile-bar { padding: 8px; }
+        .mobile-bar .cta {
+          padding: 12px 16px;
+          font-size: 14px;
+        }
+        #quote { padding: 40px 0; }
+        #quote .quote-grid { gap: 24px; }
+        #quote form {
+          border-radius: 22px;
+          padding: 14px;
+        }
+        #quote .guarantee-banner {
+          margin-bottom: 12px;
+          border-radius: 16px;
+          padding: 13px 14px;
+        }
+        #quote .guarantee-banner h3 { font-size: 18px; }
+        #quote .guarantee-banner p {
+          margin-top: 5px;
+          font-size: 13px;
+          line-height: 1.45;
+        }
+        #quote .step-form,
+        #quote .step-panel { gap: 12px; }
+        #quote .step-title { font-size: 24px; }
+        #quote .step-help {
+          margin-top: 4px;
+          font-size: 13px;
+          line-height: 1.45;
+        }
+        #quote .lead-fields { gap: 10px; }
+        #quote label > span:first-child { margin-bottom: 5px; }
+        #quote input,
+        #quote textarea,
+        #quote select {
+          border-radius: 10px;
+          padding: 10px 12px;
+          font-size: 15px;
+        }
+        #quote textarea { min-height: 76px; }
+        #quote .date-time-grid {
+          grid-template-columns: minmax(0, 1fr) 100px;
+          gap: 7px;
+        }
+        #quote .step-actions { gap: 8px; }
+        #quote .step-next,
+        #quote .step-back {
+          min-height: 46px;
+          padding: 10px 12px;
+          font-size: 13px;
+        }
+        #quote .equipment-options {
+          max-height: 190px;
+          gap: 6px;
+          padding: 6px;
+        }
+        #quote .equipment-option {
+          padding: 9px 10px;
+          font-size: 13px;
+        }
+        #quote .selected-equipment { padding: 10px; }
+        #quote .selected-equipment-item {
+          gap: 6px;
+          padding: 8px;
+          font-size: 12px;
+        }
+        #quote .quantity-control button {
+          width: 27px;
+          height: 28px;
+        }
+        #quote .quantity-control span { min-width: 28px; }
+        #quote .remove-equipment { padding: 6px 7px; }
+        #quote .quote-fee-note {
+          padding: 8px 10px;
+          font-size: 11px;
+        }
+        #quote .submit {
+          padding: 13px 16px;
+          font-size: 16px;
+        }
       }
 
       @media (min-width: 768px) {
@@ -1559,7 +1805,7 @@
       <header class="header">
         <div class="container header-inner">
           <a class="logo" href="#top">
-            <span class="logo-shell"><span class="logo-dot"><img class="logo-img" src="assets/logo/ERH LOGO.png" alt="" /></span></span>
+            <span class="logo-shell"><span class="logo-dot"><img class="logo-img" src="assets/logo/erh-logo-160.webp" alt="" width="32" height="32" /></span></span>
             <span class="logo-copy">
               <p class="logo-title">Events Rental Hub</p>
               <p class="logo-subtitle">Metro Manila | Cavite</p>
@@ -1571,7 +1817,6 @@
               <a class="header-social smart-contact" href="tel:09164645579" data-phone="+639164645579" data-agent="Events Rental Hub" aria-label="Message Events Rental Hub on Viber"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-viber"></use></svg></a>
               <a class="header-social" href="mailto:erh.rental@gmail.com" aria-label="Email Events Rental Hub"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-email"></use></svg></a>
             </div>
-            <a class="cta" href="#quote">Get My Free Quote</a>
             <details class="site-menu-wrap">
               <summary class="site-menu-toggle" aria-label="Open navigation menu">
                 <span class="site-menu-icon" aria-hidden="true"><span></span><span></span><span></span></span>
@@ -1728,8 +1973,8 @@
       <section id="quote">
         <div class="container quote-grid">
           <div>
-            <h2>Get a Quote in 3 Taps</h2>
-            <p class="section-copy">No long item list required. Tell us what you need, estimate the guest count, and leave the details needed for logistics and official quotation.</p>
+            <h2>Get a Quote in 3 Easy Steps</h2>
+            <p class="section-copy">Share your contact details, event schedule, and equipment list. We’ll review availability, delivery logistics, and prepare your formal quotation.</p>
             <div class="contact-card">
               <div class="contact-row">
                 <span class="row-title">Urgent Booking?</span>
@@ -1772,64 +2017,74 @@
               <div class="step-panel is-active" data-step="1">
                 <div>
                   <p class="step-kicker">Step 1 of 3</p>
-                  <h3 class="step-title">What do you need?</h3>
-                  <p class="step-help">Tap all that apply. You can still finalize quantities with our team after we check availability.</p>
+                  <h3 class="step-title">Your contact details</h3>
+                  <p class="step-help">Tell us where to send your availability update and formal quotation.</p>
                 </div>
-                <div class="tile-grid">
-                  <label class="need-tile"><input type="checkbox" name="needs" value="Chairs" /><span class="need-icon">🪑</span><span class="need-name">Chairs</span></label>
-                  <label class="need-tile"><input type="checkbox" name="needs" value="Tables" /><span class="need-icon custom-need-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#need-icon-table"></use></svg></span><span class="need-name">Tables</span></label>
-                  <label class="need-tile"><input type="checkbox" name="needs" value="Tents" /><span class="need-icon custom-need-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#need-icon-tent"></use></svg></span><span class="need-name">Tents</span></label>
-                  <label class="need-tile"><input type="checkbox" name="needs" value="Cooling / Fans" /><span class="need-icon custom-need-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#need-icon-fan"></use></svg></span><span class="need-name">Cooling / Fans</span></label>
-                  <label class="need-tile"><input type="checkbox" name="needs" value="Covers & Styling" /><span class="need-icon custom-need-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#need-icon-cover"></use></svg></span><span class="need-name">Covers &amp; Styling</span></label>
-                  <label class="need-tile"><input type="checkbox" name="needs" value="Stanchions and Carpets" /><span class="need-icon custom-need-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#need-icon-stanchions"></use></svg></span><span class="need-name">Stanchions and Carpets</span></label>
-                  <label class="need-tile"><input type="checkbox" name="needs" value="Smart TV and Touch Screen Kiosk" /><span class="need-icon">📺</span><span class="need-name">Smart TV and Touch Screen Kiosk</span></label>
+                <div class="lead-fields">
+                  <label><span>Name</span><input name="name" placeholder="Name / Company" autocomplete="name" required /></label>
+                  <label><span>Contact Number</span><input name="contactNumber" type="tel" placeholder="Viber or mobile number" autocomplete="tel" required /></label>
+                  <label><span>Email</span><input name="email" type="email" placeholder="Email address" autocomplete="email" required /></label>
                 </div>
                 <div class="step-actions">
-                  <button class="step-next" type="button" data-next="2" disabled>Next: Guest Count ›</button>
+                  <button class="step-next" type="button" data-next="2">Next: Event Schedule ›</button>
                 </div>
               </div>
 
               <div class="step-panel" data-step="2">
                 <div>
                   <p class="step-kicker">Step 2 of 3</p>
-                  <h3 class="step-title">How many pax?</h3>
-                  <p class="step-help">Choose the closest estimate. This helps us recommend quantities faster.</p>
+                  <h3 class="step-title">Venue and schedule</h3>
+                  <p class="step-help">Add the venue and confirmed ingress and egress schedule for delivery planning.</p>
                 </div>
-                <div class="pax-grid">
-                  <button class="pax-option" type="button" data-pax="Under 50 pax">Under 50 pax</button>
-                  <button class="pax-option" type="button" data-pax="50 - 150 pax">50 - 150 pax</button>
-                  <button class="pax-option" type="button" data-pax="150 - 300 pax">150 - 300 pax</button>
-                  <button class="pax-option" type="button" data-pax="300+ Corporate">300+ Corporate</button>
+                <div class="lead-fields">
+                  <label><span>Event Venue</span><input name="venue" placeholder="Venue / address / barangay" required /></label>
+                  <label>
+                    <span>Ingress date/time</span>
+                    <span class="date-time-grid">
+                      <input name="ingressDate" type="date" aria-label="Ingress date" required />
+                      <select class="quote-time-select" name="ingressTime" aria-label="Ingress time" required>
+                        <option value="">Select time</option>
+                      </select>
+                    </span>
+                  </label>
+                  <label>
+                    <span>Egress date/time</span>
+                    <span class="date-time-grid">
+                      <input name="egressDate" type="date" aria-label="Egress date" required />
+                      <select class="quote-time-select" name="egressTime" aria-label="Egress time" required>
+                        <option value="">Select time</option>
+                      </select>
+                    </span>
+                  </label>
                 </div>
                 <div class="step-actions">
                   <button class="step-back" type="button" data-back="1">‹ Back</button>
+                  <button class="step-next" type="button" data-next="3">Next: Equipment ›</button>
                 </div>
               </div>
 
               <div class="step-panel" data-step="3">
                 <div>
                   <p class="step-kicker">Step 3 of 3</p>
-                  <h3 class="step-title">Where should we send the quote?</h3>
-                  <p class="step-help">Share your event details so our team can confirm availability, delivery logistics, and prepare your formal quotation.</p>
+                  <h3 class="step-title">Equipment and notes</h3>
+                  <p class="step-help">Search and add the equipment you need, adjust quantities, and include any special request.</p>
                 </div>
-                <div class="lead-fields">
-                  <label><span>City / Delivery Area</span><input name="city" list="city-options" placeholder="e.g. Parañaque, Makati, Dasmariñas" required /></label>
-                  <datalist id="city-options">
-                    <option value="Manila"></option>
-                    <option value="Cavite"></option>
-                    <option value="Parañaque"></option>
-                    <option value="Makati"></option>
-                    <option value="Tagaytay"></option>
-                    <option value="Laguna"></option>
-                  </datalist>
-                  <label><span>Event Date</span><input name="eventDate" type="date" required /></label>
-                  <label><span>Phone / Viber Number</span><input name="phone" type="tel" placeholder="e.g. 0917 123 4567" required /></label>
-                  <label><span>Email Address <small style="color: var(--slate-500); font-weight: 800;">For Formal BIR/PhilGEPS Quote</small></span><input name="email" type="email" placeholder="e.g. bookings@company.com" required /></label>
+                <div class="equipment-picker-wrap">
+                  <label><span>Equipment to be rented</span><input id="equipment-picker" type="search" placeholder="Search or type equipment name..." autocomplete="off" /></label>
+                  <div class="equipment-options" id="equipment-options" aria-live="polite"></div>
                 </div>
+                <div class="selected-equipment">
+                  <h4>Selected equipment</h4>
+                  <ol class="selected-equipment-list" id="selected-equipment-list"></ol>
+                  <p class="equipment-empty" id="equipment-empty">No equipment selected yet.</p>
+                  <p class="equipment-validation" id="equipment-validation">Please add at least one equipment item.</p>
+                </div>
+                <p class="quote-fee-note">Note: Transportation, toll, and setup fees are not included. Our team will send the final quotation with terms, conditions, and payment details.</p>
+                <label><span>Notes</span><textarea name="notes" rows="3" placeholder="Specific request, color of covers etc."></textarea></label>
                 <div class="step-actions">
                   <button class="step-back" type="button" data-back="2">‹ Back</button>
                 </div>
-                <button class="cta submit" type="submit">Check Availability &amp; Get A Quote</button>
+                <button class="cta submit" type="submit">Send Quote Request</button>
                 <p class="submit-note">⚡ Replies via Viber/Email in under 15 minutes.</p>
               </div>
             </div>
@@ -1875,7 +2130,6 @@
                   </div>
                 </div>
               </div>
-              <p class="social-note" style="margin-top: 14px;">Quotation requests still stay front and center. These links make it easier to verify the business and message the team directly.</p>
             </div>
           </div>
         </div>
@@ -1887,7 +2141,7 @@
             <p><strong>Events Rental Hub</strong></p>
             <p class="footer-sub">Tables, chairs, and event rentals for private and corporate bookings across Metro Manila and nearby South Luzon areas.</p>
             <p class="docs">Registered: DTI | BIR | Business Permit | PhilGEPS</p>
-            <p class="copyright">© 2025 Events Rental Hub. All rights reserved.</p>
+            <p class="copyright">© 2023 Events Rental Hub. All rights reserved.</p>
           </div>
         </div>
       </footer>
@@ -1895,7 +2149,7 @@
 
       <aside class="messenger-panel" id="erh-messenger-panel" aria-label="Messenger chat">
         <div class="messenger-head">
-          <span class="messenger-avatar"><img src="assets/logo/ERH LOGO.png" alt="Events Rental Hub" /></span>
+          <span class="messenger-avatar"><img src="assets/logo/erh-logo-160.webp" alt="Events Rental Hub" width="44" height="44" loading="lazy" /></span>
           <button class="messenger-minimize" id="erh-messenger-minimize" type="button" aria-label="Minimize Messenger chat">−</button>
         </div>
         <h2>Chat with Events Rental Hub</h2>
@@ -1921,7 +2175,7 @@
               {
                       "name": "Lifetime Tables (6FT)",
                       "photos": [
-                              "catalog/sample-photos-3x4/6FT%20Lifetime%20Tables%203x4.png",
+                              "catalog/thumbnails/6FT%20Lifetime%20Tables%203x4.webp",
                               "catalog/assets/lifetime-tables/Lifetime Tables.jpg",
                               "catalog/assets/lifetime-tables/Lifetime Tables 1.jpg",
                               "catalog/assets/lifetime-tables/Lifetime Tbables.jpg"
@@ -1930,7 +2184,7 @@
               {
                       "name": "Lifetime Tables (4FT)",
                       "photos": [
-                              "catalog/sample-photos-3x4/4FT%20Lifetime%20Tables%203x4.png",
+                              "catalog/thumbnails/4FT%20Lifetime%20Tables%203x4.webp",
                               "catalog/assets/lifetime-tables/Lifetime Tables.jpg",
                               "catalog/assets/lifetime-tables/Lifetime Tables 1.jpg",
                               "catalog/assets/lifetime-tables/Lifetime Tbables.jpg"
@@ -1939,7 +2193,7 @@
               {
                       "name": "Round Tables (8 seater)",
                       "photos": [
-                              "catalog/sample-photos-3x4/Round%20Table%203x4.png",
+                              "catalog/thumbnails/Round%20Table%203x4.webp",
                               "catalog/assets/round-tables/Round Tables 1.jpg",
                               "catalog/assets/round-tables/Round Tables 2.jpg",
                               "catalog/assets/round-tables/Round Tables 3.jpg",
@@ -1950,7 +2204,7 @@
               {
                       "name": "Cocktail Tables",
                       "photos": [
-                              "catalog/sample-photos-3x4/Cocktail%20Tables%203x4.png",
+                              "catalog/thumbnails/Cocktail%20Tables%203x4.webp",
                               "catalog/assets/cocktail-tables/Cocktail Tables.jpg",
                               "catalog/assets/cocktail-tables/Cocktail Tables 1.jpg",
                               "catalog/assets/cocktail-tables/Cocktail Tables 2.jpg",
@@ -1961,14 +2215,14 @@
               {
                       "name": "Kiddie Set",
                       "photos": [
-                              "catalog/sample-photos-3x4/Kiddie%20Set%203x4.png",
+                              "catalog/thumbnails/Kiddie%20Set%203x4.webp",
                               "catalog/assets/kiddie-tables-chairs/Kiddie Chairs 1.jpg"
                       ]
               },
               {
                       "name": "Monobloc",
                       "photos": [
-                              "catalog/sample-photos-3x4/Monobloc%203x4.png",
+                              "catalog/thumbnails/Monobloc%203x4.webp",
                               "catalog/assets/monoblock-chairs/Monobloc Chairs 2.jpg",
                               "catalog/assets/monoblock-chairs/Monobloc Chairs3.jpg",
                               "catalog/assets/monoblock-chairs/Monobloc Chairs.jpg"
@@ -1977,7 +2231,7 @@
               {
                       "name": "Tiffany Chairs",
                       "photos": [
-                              "catalog/sample-photos-3x4/Gold%20Tiffany%20Chairs%203x4.png",
+                              "catalog/thumbnails/Gold%20Tiffany%20Chairs%203x4.webp",
                               "catalog/assets/tiffany-chairs/Tiffany Chairs 1.jpg",
                               "catalog/assets/tiffany-chairs/Tiffany Chairs 2.jpg"
                       ]
@@ -1985,55 +2239,55 @@
               {
                       "name": "Crystal Chair",
                       "photos": [
-                              "catalog/sample-photos-3x4/Crystal%20Chair%20-%203x4.png"
+                              "catalog/thumbnails/Crystal%20Chair%20-%203x4.webp"
                       ]
               },
               {
                       "name": "Gold Candice Chairs",
                       "photos": [
-                              "catalog/sample-photos-3x4/Gold%20Candice%20Chairs%20-%203x4.png"
+                              "catalog/thumbnails/Gold%20Candice%20Chairs%20-%203x4.webp"
                       ]
               },
               {
                       "name": "Rattan Cane Back Chair",
                       "photos": [
-                              "catalog/sample-photos-3x4/Rattan%20Cane%20Back%20Chair.ph%20-%203x4.png"
+                              "catalog/thumbnails/Rattan%20Cane%20Back%20Chair.ph%20-%203x4.webp"
                       ]
               },
               {
                       "name": "Rustic Wooden Foldable Chair",
                       "photos": [
-                              "catalog/sample-photos-3x4/Rustic%20Wooden%20Foldable%20Chair%20-%203x4.png"
+                              "catalog/thumbnails/Rustic%20Wooden%20Foldable%20Chair%20-%203x4.webp"
                       ]
               },
               {
                       "name": "White Resin Chair",
                       "photos": [
-                              "catalog/sample-photos-3x4/White%20Resin%20Chair%20-%203x4.png"
+                              "catalog/thumbnails/White%20Resin%20Chair%20-%203x4.webp"
                       ]
               },
               {
                       "name": "Wooden Crossback Chairs",
                       "photos": [
-                              "catalog/sample-photos-3x4/Wooden%20Crossback%20Chairs%20-%203x4.png"
+                              "catalog/thumbnails/Wooden%20Crossback%20Chairs%20-%203x4.webp"
                       ]
               },
               {
                       "name": "Iwata Air Coolers",
                       "photos": [
-                              "catalog/sample-photos-3x4/Iwata%20Air%20Coolers%20-%203x4.png"
+                              "catalog/thumbnails/Iwata%20Air%20Coolers%20-%203x4.webp"
                       ]
               },
               {
                       "name": "Iwata Industrial Fans",
                       "photos": [
-                              "catalog/sample-photos-3x4/Iwata%20Industrial%20Fans%20-%203x4.png"
+                              "catalog/thumbnails/Iwata%20Industrial%20Fans%20-%203x4.webp"
                       ]
               },
               {
                       "name": "Red Carpets",
                       "photos": [
-                              "catalog/sample-photos-3x4/Red%20Carpets%203x4.png",
+                              "catalog/thumbnails/Red%20Carpets%203x4.webp",
                               "catalog/assets/stanchions-carpets/Carpet.png",
                               "catalog/assets/stanchions-carpets/Carpets.png",
                               "catalog/assets/stanchions-carpets/Gold Stanchions 1.jpg"
@@ -2042,7 +2296,7 @@
               {
                       "name": "Gold Stanchions with Red Rope",
                       "photos": [
-                              "catalog/sample-photos-3x4/Gold%20Stanchions%203x4.png",
+                              "catalog/thumbnails/Gold%20Stanchions%203x4.webp",
                               "catalog/assets/stanchions-carpets/Gold Stanchions 1.jpg",
                               "catalog/assets/stanchions-carpets/Stanchions.png"
                       ]
@@ -2050,8 +2304,8 @@
               {
                       "name": "Retractable Tents (White)",
                       "photos": [
-                              "catalog/sample-photos-3x4/3x3%20Retractable%20Tent%20White%203x4.png",
-                              "catalog/sample-photos-3x4/3x4.5%20Retractable%20Tent%20White%203x4.png",
+                              "catalog/thumbnails/3x3%20Retractable%20Tent%20White%203x4.webp",
+                              "catalog/thumbnails/3x4.5%20Retractable%20Tent%20White%203x4.webp",
                               "catalog/assets/tents/TENTS.jpg",
                               "catalog/assets/tents/TENTS1.jpg",
                               "catalog/assets/tents/Tents 1.jpg",
@@ -2062,43 +2316,43 @@
               {
                       "name": "Aircon Tent",
                       "photos": [
-                              "catalog/sample-photos-3x4/Aircon%20Tent%20-%203x4.png"
+                              "catalog/thumbnails/Aircon%20Tent%20-%203x4.webp"
                       ]
               },
               {
                       "name": "Aluminum Tent",
                       "photos": [
-                              "catalog/sample-photos-3x4/Aluminum%20Tent%20-%203x4.png"
+                              "catalog/thumbnails/Aluminum%20Tent%20-%203x4.webp"
                       ]
               },
               {
                       "name": "Enclosed Aluminum tent",
                       "photos": [
-                              "catalog/sample-photos-3x4/Enclosed%20Aluminum%20tent%20-%203x4.png"
+                              "catalog/thumbnails/Enclosed%20Aluminum%20tent%20-%203x4.webp"
                       ]
               },
               {
                       "name": "High Peak tent",
                       "photos": [
-                              "catalog/sample-photos-3x4/High%20Peak%20tent%20-%203x4.png"
+                              "catalog/thumbnails/High%20Peak%20tent%20-%203x4.webp"
                       ]
               },
               {
                       "name": "Premium Heavy Duty Tent",
                       "photos": [
-                              "catalog/sample-photos-3x4/Premium%20Heavy%20Duty%20Tent%20-%203x4.png"
+                              "catalog/thumbnails/Premium%20Heavy%20Duty%20Tent%20-%203x4.webp"
                       ]
               },
               {
                       "name": "Transluscent Dome Tent",
                       "photos": [
-                              "catalog/sample-photos-3x4/Transluscent%20Dome%20Tent%20-%203x4.png"
+                              "catalog/thumbnails/Transluscent%20Dome%20Tent%20-%203x4.webp"
                       ]
               },
               {
                       "name": "White Dome Tent",
                       "photos": [
-                              "catalog/sample-photos-3x4/white-dome-tent-fixed.png",
+                              "catalog/thumbnails/white-dome-tent-fixed.webp",
                               "catalog/sample-photos/White%20Dome%20Tent.png"
                       ]
               }
@@ -2124,7 +2378,7 @@
 
       document.getElementById("catalog").innerHTML = inventory.map((item, itemIndex) => `
         <article class="catalog-card">
-          <div class="catalog-art" data-art style="background-image: url('${item.photos[0]}')">
+          <div class="catalog-art" data-art data-background="${item.photos[0]}">
             <div class="catalog-overlay"></div>
             <div class="catalog-controls">
               <button class="catalog-arrow" type="button" data-direction="-1" data-card="${itemIndex}" aria-label="Previous photo">‹</button>
@@ -2135,6 +2389,27 @@
           <h3>${item.name}</h3>
         </article>
       `).join("");
+
+      const loadCatalogArt = (art) => {
+        if (!art?.dataset.background) return;
+        art.style.backgroundImage = `url('${art.dataset.background}')`;
+        delete art.dataset.background;
+      };
+
+      const catalogArtElements = document.querySelectorAll("[data-art]");
+      if ("IntersectionObserver" in window) {
+        const catalogImageObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            loadCatalogArt(entry.target);
+            observer.unobserve(entry.target);
+          });
+        }, { rootMargin: "300px" });
+
+        catalogArtElements.forEach((art) => catalogImageObserver.observe(art));
+      } else {
+        catalogArtElements.forEach(loadCatalogArt);
+      }
 
       document.getElementById("areas").innerHTML = areas.map((area) => `<span class="pill">📍 ${area}</span>`).join("");
 
@@ -2170,7 +2445,40 @@
       });
 
       const quoteForm = document.getElementById("availability-form");
-      const formState = { needs: [], pax: "" };
+      const equipmentPicker = document.getElementById("equipment-picker");
+      const equipmentOptions = document.getElementById("equipment-options");
+      const selectedEquipmentList = document.getElementById("selected-equipment-list");
+      const equipmentEmpty = document.getElementById("equipment-empty");
+      const equipmentValidation = document.getElementById("equipment-validation");
+      const equipmentItems = inventory.map((item) => ({
+        name: item.name,
+        image: item.photos[0]
+      }));
+      const formState = { equipmentItems: [] };
+      const timeOptions = Array.from({ length: 48 }, (_, index) => {
+        const hours = Math.floor(index / 2);
+        const minutes = index % 2 === 0 ? "00" : "30";
+        const value = `${String(hours).padStart(2, "0")}:${minutes}`;
+        const displayHours = hours % 12 || 12;
+        const period = hours < 12 ? "AM" : "PM";
+        return { value, label: `${displayHours}:${minutes} ${period}` };
+      });
+
+      document.querySelectorAll(".quote-time-select").forEach((select) => {
+        select.insertAdjacentHTML(
+          "beforeend",
+          timeOptions
+            .map((option) => `<option value="${option.value}">${option.label}</option>`)
+            .join("")
+        );
+      });
+
+      const escapeHtml = (value) => String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 
       const setStep = (stepNumber) => {
         document.querySelectorAll("[data-step]").forEach((panel) => {
@@ -2181,71 +2489,201 @@
         });
       };
 
-      const syncNeeds = () => {
-        formState.needs = Array.from(document.querySelectorAll('input[name="needs"]:checked')).map((input) => input.value);
-        const nextButton = document.querySelector('[data-next="2"]');
-        if (nextButton) {
-          nextButton.disabled = formState.needs.length === 0;
+      const validateStep = (stepNumber) => {
+        const panel = document.querySelector(`[data-step="${stepNumber}"]`);
+        const requiredFields = panel ? [...panel.querySelectorAll("input[required], textarea[required], select[required]")] : [];
+        const invalidField = requiredFields.find((field) => !field.checkValidity());
+
+        if (invalidField) {
+          invalidField.reportValidity();
+          return false;
+        }
+
+        return true;
+      };
+
+      const renderEquipmentOptions = () => {
+        if (!equipmentOptions || !equipmentPicker) return;
+
+        const query = equipmentPicker.value.trim().toLowerCase();
+        const selectedNames = new Set(formState.equipmentItems.map((item) => item.name));
+        const filteredItems = equipmentItems.filter((item) => !query || item.name.toLowerCase().includes(query));
+        const hasExactMatch = equipmentItems.some((item) => item.name.toLowerCase() === query);
+
+        equipmentOptions.innerHTML = filteredItems.map((item) => {
+          const selected = selectedNames.has(item.name);
+          return `
+            <button class="equipment-option" type="button" data-equipment-name="${encodeURIComponent(item.name)}" ${selected ? "disabled" : ""}>
+              <span class="equipment-option-main">
+                <img class="equipment-option-image" src="${escapeHtml(item.image)}" alt="" width="42" height="42" loading="lazy" />
+                <span class="equipment-option-name">${escapeHtml(item.name)}</span>
+              </span>
+              <span class="equipment-option-action">${selected ? "Added" : "Add"}</span>
+            </button>
+          `;
+        }).join("");
+
+        if (query && !hasExactMatch) {
+          equipmentOptions.insertAdjacentHTML("beforeend", `
+            <button class="equipment-option" type="button" data-custom-equipment="${encodeURIComponent(equipmentPicker.value.trim())}">
+              <span>Add custom equipment: ${escapeHtml(equipmentPicker.value.trim())}</span>
+              <span class="equipment-option-action">Add</span>
+            </button>
+          `);
+        }
+
+        if (!filteredItems.length && (!query || hasExactMatch)) {
+          equipmentOptions.innerHTML = '<p class="equipment-empty">No matching equipment found.</p>';
         }
       };
 
-      document.querySelectorAll('input[name="needs"]').forEach((input) => {
-        input.addEventListener("change", syncNeeds);
+      const renderSelectedEquipment = () => {
+        if (!selectedEquipmentList || !equipmentEmpty) return;
+
+        selectedEquipmentList.innerHTML = formState.equipmentItems.map((item, index) => `
+          <li class="selected-equipment-item">
+            <span class="selected-equipment-main">
+              <img class="selected-equipment-image" src="${escapeHtml(item.image)}" alt="" width="36" height="36" loading="lazy" />
+              <span class="selected-equipment-name">${index + 1}. ${escapeHtml(item.name)}</span>
+            </span>
+            <span class="quantity-control">
+              <button type="button" data-quantity-change="-1" data-equipment-index="${index}" aria-label="Decrease ${escapeHtml(item.name)} quantity">−</button>
+              <span>${item.quantity}</span>
+              <button type="button" data-quantity-change="1" data-equipment-index="${index}" aria-label="Increase ${escapeHtml(item.name)} quantity">+</button>
+            </span>
+            <button class="remove-equipment" type="button" data-remove-equipment="${index}">Remove</button>
+          </li>
+        `).join("");
+
+        equipmentEmpty.hidden = formState.equipmentItems.length > 0;
+        equipmentValidation?.classList.remove("is-visible");
+        renderEquipmentOptions();
+      };
+
+      const addEquipment = (name, image = "assets/logo/erh-logo-160.webp") => {
+        if (!name || formState.equipmentItems.some((item) => item.name === name)) return;
+        formState.equipmentItems.push({ name, image, quantity: 1 });
+        equipmentPicker.value = "";
+        renderSelectedEquipment();
+      };
+
+      equipmentPicker?.addEventListener("input", renderEquipmentOptions);
+      equipmentOptions?.addEventListener("click", (event) => {
+        const equipmentButton = event.target.closest("[data-equipment-name]");
+        const customButton = event.target.closest("[data-custom-equipment]");
+
+        if (equipmentButton) {
+          const name = decodeURIComponent(equipmentButton.dataset.equipmentName);
+          const item = equipmentItems.find((equipmentItem) => equipmentItem.name === name);
+          addEquipment(name, item?.image);
+        }
+        if (customButton) addEquipment(decodeURIComponent(customButton.dataset.customEquipment));
       });
-      document.querySelectorAll(".need-tile").forEach((tile) => {
-        tile.addEventListener("click", (event) => {
-          const input = tile.querySelector('input[name="needs"]');
-          if (!input || event.target === input) return;
-          event.preventDefault();
-          input.checked = !input.checked;
-          input.dispatchEvent(new Event("change", { bubbles: true }));
-        });
+      selectedEquipmentList?.addEventListener("click", (event) => {
+        const removeButton = event.target.closest("[data-remove-equipment]");
+        const quantityButton = event.target.closest("[data-quantity-change]");
+
+        if (removeButton) {
+          formState.equipmentItems.splice(Number(removeButton.dataset.removeEquipment), 1);
+          renderSelectedEquipment();
+        }
+
+        if (quantityButton) {
+          const index = Number(quantityButton.dataset.equipmentIndex);
+          const change = Number(quantityButton.dataset.quantityChange);
+          formState.equipmentItems[index].quantity = Math.max(1, formState.equipmentItems[index].quantity + change);
+          renderSelectedEquipment();
+        }
       });
 
       document.querySelectorAll("[data-next]").forEach((button) => {
-        button.addEventListener("click", () => setStep(button.dataset.next));
+        button.addEventListener("click", () => {
+          const currentStep = Number(button.closest("[data-step]")?.dataset.step || 1);
+          if (validateStep(currentStep)) setStep(button.dataset.next);
+        });
       });
 
       document.querySelectorAll("[data-back]").forEach((button) => {
         button.addEventListener("click", () => setStep(button.dataset.back));
       });
 
-      document.querySelectorAll(".pax-option").forEach((button) => {
-        button.addEventListener("click", () => {
-          formState.pax = button.dataset.pax;
-          document.querySelectorAll(".pax-option").forEach((option) => option.classList.remove("is-selected"));
-          button.classList.add("is-selected");
-          setStep(3);
-        });
-      });
+      renderEquipmentOptions();
+      renderSelectedEquipment();
 
       if (quoteForm) {
         quoteForm.addEventListener("submit", (event) => {
           event.preventDefault();
+
+          if (!formState.equipmentItems.length) {
+            equipmentValidation?.classList.add("is-visible");
+            equipmentPicker?.focus();
+            return;
+          }
+
           const formData = new FormData(quoteForm);
+          const now = new Date();
+          const requestNumber = [
+            now.getFullYear(),
+            String(now.getMonth() + 1).padStart(2, "0"),
+            String(now.getDate()).padStart(2, "0")
+          ].join("") + "-" + [
+            String(now.getHours()).padStart(2, "0"),
+            String(now.getMinutes()).padStart(2, "0"),
+            String(now.getSeconds()).padStart(2, "0")
+          ].join("");
           const payload = {
-            needs: formState.needs,
-            guestCount: formState.pax,
-            city: formData.get("city"),
-            eventDate: formData.get("eventDate"),
-            phone: formData.get("phone"),
+            requestNumber,
+            name: formData.get("name"),
+            contactNumber: formData.get("contactNumber"),
             email: formData.get("email"),
+            venue: formData.get("venue"),
+            ingressDate: formData.get("ingressDate"),
+            ingressTime: formData.get("ingressTime"),
+            egressDate: formData.get("egressDate"),
+            egressTime: formData.get("egressTime"),
+            equipmentItems: formState.equipmentItems,
+            notes: formData.get("notes")
           };
           window.erhLastLeadPayload = payload;
 
-          const subject = encodeURIComponent(`New Booking Inquiry - ${payload.eventDate || "No Date"} - ${payload.city || "No City"}`);
+          const [year, month, day] = String(payload.ingressDate).split("-");
+          const eventDate = year && month && day ? `${month}/${day}/${year}` : payload.ingressDate;
+          const subject = encodeURIComponent(`RFQ #${requestNumber} - ${payload.name.trim()} - ${eventDate}`);
+          const equipmentList = payload.equipmentItems
+            .map((item, index) => `${index + 1}. ${item.name} - Qty: ${item.quantity}`)
+            .join("\n");
           const body = encodeURIComponent([
-            "New availability request:",
+            "Hi Events Rental Hub,",
             "",
-            `Items needed: ${payload.needs.join(", ") || "Not selected"}`,
-            `Estimated guest count: ${payload.guestCount || "Not selected"}`,
-            `City / Delivery Area: ${payload.city}`,
-            `Event Date: ${payload.eventDate}`,
-            `Phone / Viber: ${payload.phone}`,
+            `RFQ reference: #${requestNumber}`,
+            `Name: ${payload.name}`,
+            `Contact number: ${payload.contactNumber}`,
             `Email: ${payload.email}`,
+            `Event venue: ${payload.venue}`,
+            `Ingress date/time: ${payload.ingressDate} ${payload.ingressTime}`,
+            `Egress date/time: ${payload.egressDate} ${payload.egressTime}`,
+            "",
+            "Equipment to be rented:",
+            equipmentList,
+            "",
+            `Notes: ${payload.notes || ""}`,
+            "",
+            "Please send me a quote or availability update. Thank you."
           ].join("\n"));
-          const cc = encodeURIComponent("mdotmercado@gmail.com,kennethaudreydeocampo@gmail.com,sls.sonnysumalinog@gmail.com");
-          window.location.href = `mailto:erh.rental@gmail.com?cc=${cc}&subject=${subject}&body=${body}`;
+          const cc = encodeURIComponent([
+            "mdotmercado@gmail.com",
+            "kennethaudreydeocampo@gmail.com",
+            "sls.sonnysumalinog@gmail.com",
+            payload.email
+          ].filter(Boolean).join(","));
+          const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=erh.rental@gmail.com&cc=${cc}&su=${subject}&body=${body}`;
+          const submitButton = quoteForm.querySelector(".submit");
+
+          if (submitButton) {
+            submitButton.textContent = "Opening Quote Request...";
+          }
+
+          window.location.href = gmailComposeUrl;
         });
       }
 
@@ -2313,6 +2751,18 @@
         const launch = document.getElementById("erh-messenger-launch");
         const minimize = document.getElementById("erh-messenger-minimize");
         if (!panel || !launch || !minimize) return;
+        if (window.matchMedia("(max-width: 767px)").matches) {
+          panel.hidden = true;
+          launch.hidden = false;
+        }
+        const mobileBar = document.querySelector(".mobile-bar");
+        const quoteSection = document.getElementById("quote");
+        if (mobileBar && quoteSection && "IntersectionObserver" in window) {
+          const quoteObserver = new IntersectionObserver(([entry]) => {
+            mobileBar.classList.toggle("is-hidden", entry.isIntersecting);
+          }, { threshold: 0.05 });
+          quoteObserver.observe(quoteSection);
+        }
         minimize.addEventListener("click", () => {
           panel.hidden = true;
           launch.hidden = false;
