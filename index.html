@@ -1213,8 +1213,13 @@
       }
       .date-time-grid {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(110px, 0.55fr);
+        grid-template-columns: minmax(0, 1fr) 180px;
         gap: 10px;
+      }
+      .compact-time-grid {
+        display: grid;
+        grid-template-columns: 66px minmax(0, 1fr);
+        gap: 7px;
       }
       .equipment-picker-wrap {
         display: grid;
@@ -1653,7 +1658,7 @@
         }
         #quote textarea { min-height: 76px; }
         #quote .date-time-grid {
-          grid-template-columns: minmax(0, 1fr) 100px;
+          grid-template-columns: minmax(0, 1fr) 170px;
           gap: 7px;
         }
         #quote .step-actions { gap: 8px; }
@@ -2042,18 +2047,28 @@
                     <span>Ingress date/time</span>
                     <span class="date-time-grid">
                       <input name="ingressDate" type="date" aria-label="Ingress date" required />
-                      <select class="quote-time-select" name="ingressTime" aria-label="Ingress time" required>
-                        <option value="">Select time</option>
-                      </select>
+                      <span class="compact-time-grid">
+                        <select class="quote-time-hour" name="ingressHour" aria-label="Ingress hour" required><option value="">Hr</option></select>
+                        <select name="ingressTimeSlot" aria-label="Ingress minutes and period" required>
+                          <option value="">Time</option>
+                          <option value="00-AM">:00 AM</option><option value="30-AM">:30 AM</option>
+                          <option value="00-PM">:00 PM</option><option value="30-PM">:30 PM</option>
+                        </select>
+                      </span>
                     </span>
                   </label>
                   <label>
                     <span>Egress date/time</span>
                     <span class="date-time-grid">
                       <input name="egressDate" type="date" aria-label="Egress date" required />
-                      <select class="quote-time-select" name="egressTime" aria-label="Egress time" required>
-                        <option value="">Select time</option>
-                      </select>
+                      <span class="compact-time-grid">
+                        <select class="quote-time-hour" name="egressHour" aria-label="Egress hour" required><option value="">Hr</option></select>
+                        <select name="egressTimeSlot" aria-label="Egress minutes and period" required>
+                          <option value="">Time</option>
+                          <option value="00-AM">:00 AM</option><option value="30-AM">:30 AM</option>
+                          <option value="00-PM">:00 PM</option><option value="30-PM">:30 PM</option>
+                        </select>
+                      </span>
                     </span>
                   </label>
                 </div>
@@ -2455,23 +2470,42 @@
         image: item.photos[0]
       }));
       const formState = { equipmentItems: [] };
-      const timeOptions = Array.from({ length: 48 }, (_, index) => {
-        const hours = Math.floor(index / 2);
-        const minutes = index % 2 === 0 ? "00" : "30";
-        const value = `${String(hours).padStart(2, "0")}:${minutes}`;
-        const displayHours = hours % 12 || 12;
-        const period = hours < 12 ? "AM" : "PM";
-        return { value, label: `${displayHours}:${minutes} ${period}` };
-      });
+      const rfqCounterKey = "erhRfqCounter";
+      let fallbackRfqCounter = 0;
 
-      document.querySelectorAll(".quote-time-select").forEach((select) => {
+      document.querySelectorAll(".quote-time-hour").forEach((select) => {
         select.insertAdjacentHTML(
           "beforeend",
-          timeOptions
-            .map((option) => `<option value="${option.value}">${option.label}</option>`)
+          Array.from({ length: 12 }, (_, index) => String(index + 1))
+            .map((hour) => `<option value="${hour}">${hour}</option>`)
             .join("")
         );
       });
+
+      const getNextRfqNumber = () => {
+        try {
+          const currentNumber = Number.parseInt(localStorage.getItem(rfqCounterKey) || "0", 10);
+          const nextNumber = Number.isFinite(currentNumber) ? currentNumber + 1 : 1;
+          localStorage.setItem(rfqCounterKey, String(nextNumber));
+          return nextNumber;
+        } catch (error) {
+          fallbackRfqCounter += 1;
+          return fallbackRfqCounter;
+        }
+      };
+
+      const formatEventDate = (value) => {
+        const [year, month, day] = String(value).split("-");
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        return year && month && day ? `${monthNames[Number(month) - 1]} ${Number(day)},${year}` : value;
+      };
+
+      const formatCompactTime = (hourValue, slotValue) => {
+        const [minutes, period] = String(slotValue).split("-");
+        let hours = Number(hourValue) % 12;
+        if (period === "PM") hours += 12;
+        return `${String(hours).padStart(2, "0")}:${minutes}`;
+      };
 
       const escapeHtml = (value) => String(value)
         .replaceAll("&", "&amp;")
@@ -2621,16 +2655,7 @@
           }
 
           const formData = new FormData(quoteForm);
-          const now = new Date();
-          const requestNumber = [
-            now.getFullYear(),
-            String(now.getMonth() + 1).padStart(2, "0"),
-            String(now.getDate()).padStart(2, "0")
-          ].join("") + "-" + [
-            String(now.getHours()).padStart(2, "0"),
-            String(now.getMinutes()).padStart(2, "0"),
-            String(now.getSeconds()).padStart(2, "0")
-          ].join("");
+          const requestNumber = getNextRfqNumber();
           const payload = {
             requestNumber,
             name: formData.get("name"),
@@ -2638,24 +2663,23 @@
             email: formData.get("email"),
             venue: formData.get("venue"),
             ingressDate: formData.get("ingressDate"),
-            ingressTime: formData.get("ingressTime"),
+            ingressTime: formatCompactTime(formData.get("ingressHour"), formData.get("ingressTimeSlot")),
             egressDate: formData.get("egressDate"),
-            egressTime: formData.get("egressTime"),
+            egressTime: formatCompactTime(formData.get("egressHour"), formData.get("egressTimeSlot")),
             equipmentItems: formState.equipmentItems,
             notes: formData.get("notes")
           };
           window.erhLastLeadPayload = payload;
 
-          const [year, month, day] = String(payload.ingressDate).split("-");
-          const eventDate = year && month && day ? `${month}/${day}/${year}` : payload.ingressDate;
-          const subject = encodeURIComponent(`RFQ #${requestNumber} - ${payload.name.trim()} - ${eventDate}`);
+          const eventDate = formatEventDate(payload.ingressDate);
+          const subject = encodeURIComponent(`RFQ#${requestNumber}-${payload.name.trim()}-${eventDate}`);
           const equipmentList = payload.equipmentItems
             .map((item, index) => `${index + 1}. ${item.name} - Qty: ${item.quantity}`)
             .join("\n");
           const body = encodeURIComponent([
             "Hi Events Rental Hub,",
             "",
-            `RFQ reference: #${requestNumber}`,
+            `RFQ reference: RFQ#${requestNumber}`,
             `Name: ${payload.name}`,
             `Contact number: ${payload.contactNumber}`,
             `Email: ${payload.email}`,
