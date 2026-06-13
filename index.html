@@ -1211,16 +1211,139 @@
       .lead-fields label span {
         font-size: 13px;
       }
-      .date-time-grid {
+      .schedule-row {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) 180px;
+        grid-template-columns: 118px minmax(0, 1fr);
+        align-items: center;
         gap: 10px;
       }
-      .compact-time-grid {
-        display: grid;
-        grid-template-columns: 66px minmax(0, 1fr);
-        gap: 7px;
+      .schedule-row > .schedule-label {
+        margin: 0;
+        line-height: 1.25;
       }
+      .schedule-row span { margin-bottom: 0; }
+      .date-time-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 150px;
+        gap: 10px;
+      }
+      .combined-date-picker {
+        position: relative;
+        display: block;
+        min-width: 0;
+      }
+      .date-picker-display {
+        display: grid;
+        grid-template-columns: 16px minmax(0, 1fr) 16px;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        min-height: 44px;
+        border: 1px solid var(--slate-300);
+        border-radius: 12px;
+        background: white;
+        padding: 10px 14px;
+        color: var(--slate-950);
+        font-size: 14px;
+        font-weight: 800;
+      }
+      .date-picker-display::before { content: ""; }
+      .date-picker-display [data-date-label] {
+        min-width: 0;
+        overflow: hidden;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .date-picker-display.is-empty { color: var(--slate-500); }
+      .date-picker-display svg {
+        width: 16px;
+        height: 16px;
+        flex: 0 0 auto;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+      }
+      .combined-date-picker input[type="date"] {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+      }
+      .combined-date-picker:focus-within .date-picker-display {
+        border-color: var(--orange-500);
+        box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.12);
+      }
+      .combined-time-picker {
+        position: relative;
+        display: block;
+        min-width: 0;
+      }
+      .time-picker-trigger {
+        display: grid;
+        grid-template-columns: 12px minmax(0, 1fr) 12px;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        min-height: 48px;
+        border: 1px solid var(--slate-300);
+        border-radius: 12px;
+        background: white;
+        padding: 12px 14px;
+        color: var(--slate-950);
+        font: inherit;
+        font-size: 14px;
+        font-weight: 800;
+        text-align: center;
+        cursor: pointer;
+      }
+      .time-picker-trigger::before { content: ""; }
+      .time-picker-trigger [data-time-label] {
+        min-width: 0;
+        overflow: hidden;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .time-picker-trigger:focus,
+      .time-picker-trigger[aria-expanded="true"] {
+        border-color: var(--orange-500);
+        box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.12);
+        outline: none;
+      }
+      .time-picker-trigger[aria-invalid="true"] { border-color: #dc2626; }
+      .time-picker-menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        left: 0;
+        z-index: 90;
+        display: grid;
+        max-height: min(240px, 40vh);
+        overflow-y: auto;
+        border: 1px solid var(--slate-200);
+        border-radius: 14px;
+        background: white;
+        padding: 6px;
+        box-shadow: 0 18px 42px rgba(15, 23, 42, 0.18);
+      }
+      .time-picker-menu[hidden] { display: none; }
+      .time-picker-option {
+        border: 0;
+        border-radius: 9px;
+        background: white;
+        padding: 9px 12px;
+        color: var(--slate-950);
+        font: inherit;
+        font-size: 14px;
+        font-weight: 800;
+        text-align: left;
+        cursor: pointer;
+      }
+      .time-picker-option:hover { background: var(--slate-50); }
+      .time-picker-option.is-selected { background: var(--orange-500); color: white; }
       .equipment-picker-wrap {
         display: grid;
         gap: 8px;
@@ -1344,6 +1467,30 @@
         border-left: 1px solid var(--slate-200);
         font-size: 12px;
       }
+      .quantity-control input {
+        width: 38px;
+        min-width: 38px;
+        height: 30px;
+        border: 0;
+        border-right: 1px solid var(--slate-200);
+        border-left: 1px solid var(--slate-200);
+        border-radius: 0;
+        padding: 0;
+        background: white;
+        color: var(--slate-950);
+        font: inherit;
+        font-size: 12px;
+        font-weight: 900;
+        text-align: center;
+        outline: none;
+        appearance: textfield;
+        -moz-appearance: textfield;
+      }
+      .quantity-control input::-webkit-inner-spin-button,
+      .quantity-control input::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
       .remove-equipment {
         border: 1px solid #fecaca;
         border-radius: 8px;
@@ -1423,7 +1570,11 @@
       }
       input::placeholder,
       textarea::placeholder {
-        color: var(--slate-400);
+        color: var(--slate-500);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 14px;
+        font-weight: 800;
+        opacity: 1;
       }
       input:focus, textarea:focus, select:focus {
         border-color: var(--orange-500);
@@ -1657,10 +1808,10 @@
           font-size: 15px;
         }
         #quote textarea { min-height: 76px; }
-        #quote .date-time-grid {
-          grid-template-columns: minmax(0, 1fr) 170px;
-          gap: 7px;
-        }
+        #quote .schedule-row { grid-template-columns: 110px minmax(0, 1fr); gap: 8px; }
+        #quote .date-time-grid { grid-template-columns: minmax(0, 1fr) 142px; gap: 7px; }
+        #quote .date-picker-display,
+        #quote .time-picker-trigger { min-height: 44px; padding: 9px 11px; font-size: 13px; }
         #quote .step-actions { gap: 8px; }
         #quote .step-next,
         #quote .step-back {
@@ -1734,15 +1885,159 @@
         .footer-wrap { grid-template-columns: 1fr auto; align-items: start; }
       }
 
+      @media (max-width: 480px) {
+        #quote .schedule-row { grid-template-columns: 1fr; gap: 5px; }
+        #quote .date-time-grid { grid-template-columns: minmax(0, 1fr) 128px; }
+        #quote .date-picker-display { font-size: 12px; }
+      }
+
       @media (max-width: 767px) {
         .logo-subtitle { display: none; }
       }
       @media (min-width: 1024px) {
         .catalog-card { flex-basis: 260px; }
-        .quote-grid { grid-template-columns: 0.85fr 1.15fr; }
+        .quote-grid { grid-template-columns: 0.82fr 1.18fr; }
         .connect-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         .contact-card .connect-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         .founder-links { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      }
+
+      /* Keep the homepage and catalog quote forms visually identical. */
+      #quote { padding: 56px 0; }
+      #quote .quote-grid {
+        width: 100%;
+        max-width: 1280px;
+        gap: 32px;
+        padding-right: 24px;
+        padding-left: 24px;
+      }
+      #availability-form {
+        border-radius: 30px;
+        padding: 24px;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+      }
+      #availability-form .guarantee-banner {
+        margin-bottom: 16px;
+        border-radius: 24px;
+        padding: 20px;
+      }
+      #availability-form .guarantee-banner h3 {
+        font-size: 24px;
+        font-weight: 950;
+        letter-spacing: -0.02em;
+        line-height: 1.25;
+      }
+      #availability-form .guarantee-banner p {
+        margin-top: 8px;
+        font-size: 14px;
+        line-height: 24px;
+      }
+      #availability-form .step-form { gap: 0; }
+      #availability-form .step-panel.is-active {
+        display: grid;
+        gap: 16px;
+        margin-top: 28px;
+      }
+      #availability-form .step-kicker {
+        margin: 0;
+        font-size: 12px;
+        font-weight: 950;
+        letter-spacing: 0.14em;
+        line-height: 16px;
+      }
+      #availability-form .step-title {
+        margin-top: 12px;
+        font-size: 30px;
+        font-weight: 950;
+        letter-spacing: -0.02em;
+        line-height: 30px;
+      }
+      #availability-form .step-help {
+        margin-top: 8px;
+        font-size: 14px;
+        line-height: 24px;
+      }
+      #availability-form .lead-fields { gap: 16px; }
+      #availability-form .lead-fields > label:not(.schedule-row) {
+        display: grid;
+        gap: 8px;
+      }
+      #availability-form .lead-fields > label > span:first-child {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 900;
+        line-height: 20px;
+      }
+      #availability-form .lead-fields > label:not(.schedule-row) input,
+      #availability-form .lead-fields > label:not(.schedule-row) textarea {
+        min-height: 46px;
+        border-radius: 6px;
+        padding: 12px 16px;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+      }
+      #availability-form .schedule-row {
+        grid-template-columns: 118px minmax(0, 1fr);
+        gap: 8px;
+      }
+      #availability-form .schedule-row > .schedule-label {
+        font-size: 13px !important;
+        font-weight: 900;
+        line-height: 1.25 !important;
+      }
+      #availability-form .date-time-grid {
+        grid-template-columns: minmax(0, 1fr) 150px;
+        gap: 8px;
+      }
+      #availability-form .date-picker-display,
+      #availability-form .time-picker-trigger {
+        min-height: 44px;
+        border-radius: 6px;
+        padding: 10px 12px;
+        font-size: 14px;
+        font-weight: 800;
+        line-height: 20px;
+      }
+      #availability-form .step-actions {
+        align-items: stretch;
+        gap: 12px;
+      }
+      #availability-form .step-next,
+      #availability-form .step-back {
+        min-height: 52px;
+        border-radius: 12px;
+        padding: 16px 20px;
+        font-weight: 950;
+      }
+      #availability-form .step-next { font-size: 16px; }
+      #availability-form .step-next { border: 0; }
+      #availability-form .step-next { line-height: 24px; }
+      #availability-form .step-back {
+        font-size: 14px;
+        line-height: 20px;
+      }
+
+      @media (max-width: 639px) {
+        #quote { padding: 56px 0; }
+        #quote .quote-grid {
+          padding-right: 16px;
+          padding-left: 16px;
+        }
+        #availability-form { padding: 20px; }
+        #availability-form .schedule-row {
+          grid-template-columns: minmax(0, 1fr) 132px;
+          gap: 8px;
+        }
+        #availability-form .schedule-row > .schedule-label {
+          grid-column: 1 / -1;
+        }
+        #availability-form .date-time-grid {
+          display: contents;
+        }
+        #availability-form .date-picker-display { font-size: 12px; }
+        #availability-form input::placeholder,
+        #availability-form textarea::placeholder { font-size: 12px; }
       }
     </style>
   </head>
@@ -2038,36 +2333,36 @@
               <div class="step-panel" data-step="2">
                 <div>
                   <p class="step-kicker">Step 2 of 3</p>
-                  <h3 class="step-title">Venue and schedule</h3>
+                  <h3 class="step-title">Venue and Schedule</h3>
                   <p class="step-help">Add the venue and confirmed ingress and egress schedule for delivery planning.</p>
                 </div>
                 <div class="lead-fields">
-                  <label><span>Event Venue</span><input name="venue" placeholder="Venue / address / barangay" required /></label>
-                  <label>
-                    <span>Ingress date/time</span>
+                  <label><span>Event Venue</span><input name="venue" placeholder="Venue / Address / Barangay" required /></label>
+                  <label class="schedule-row">
+                    <span class="schedule-label">Ingress Date/Time</span>
                     <span class="date-time-grid">
-                      <input name="ingressDate" type="date" aria-label="Ingress date" required />
-                      <span class="compact-time-grid">
-                        <select class="quote-time-hour" name="ingressHour" aria-label="Ingress hour" required><option value="">Hr</option></select>
-                        <select name="ingressTimeSlot" aria-label="Ingress minutes and period" required>
-                          <option value="">Time</option>
-                          <option value="00-AM">:00 AM</option><option value="30-AM">:30 AM</option>
-                          <option value="00-PM">:00 PM</option><option value="30-PM">:30 PM</option>
-                        </select>
+                      <span class="combined-date-picker" data-date-picker>
+                        <span class="date-picker-display is-empty"><span data-date-label>Select Date</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3v3M18 3v3M4 8h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Z" /></svg></span>
+                        <input name="ingressDate" type="date" aria-label="Ingress Date" required />
+                      </span>
+                      <span class="combined-time-picker" data-time-picker data-time-required>
+                        <button class="time-picker-trigger" type="button" aria-label="Ingress Time" aria-haspopup="listbox" aria-expanded="false"><span data-time-label>Select Time</span><span aria-hidden="true">▾</span></button>
+                        <span class="time-picker-menu" role="listbox" aria-label="Ingress Time choices" hidden></span>
+                        <input name="ingressTime" type="hidden" />
                       </span>
                     </span>
                   </label>
-                  <label>
-                    <span>Egress date/time</span>
+                  <label class="schedule-row">
+                    <span class="schedule-label">Egress Date/Time</span>
                     <span class="date-time-grid">
-                      <input name="egressDate" type="date" aria-label="Egress date" required />
-                      <span class="compact-time-grid">
-                        <select class="quote-time-hour" name="egressHour" aria-label="Egress hour" required><option value="">Hr</option></select>
-                        <select name="egressTimeSlot" aria-label="Egress minutes and period" required>
-                          <option value="">Time</option>
-                          <option value="00-AM">:00 AM</option><option value="30-AM">:30 AM</option>
-                          <option value="00-PM">:00 PM</option><option value="30-PM">:30 PM</option>
-                        </select>
+                      <span class="combined-date-picker" data-date-picker>
+                        <span class="date-picker-display is-empty"><span data-date-label>Select Date</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3v3M18 3v3M4 8h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Z" /></svg></span>
+                        <input name="egressDate" type="date" aria-label="Egress Date" required />
+                      </span>
+                      <span class="combined-time-picker" data-time-picker data-time-required>
+                        <button class="time-picker-trigger" type="button" aria-label="Egress Time" aria-haspopup="listbox" aria-expanded="false"><span data-time-label>Select Time</span><span aria-hidden="true">▾</span></button>
+                        <span class="time-picker-menu" role="listbox" aria-label="Egress Time choices" hidden></span>
+                        <input name="egressTime" type="hidden" />
                       </span>
                     </span>
                   </label>
@@ -2472,15 +2767,55 @@
       const formState = { equipmentItems: [] };
       const rfqCounterKey = "erhRfqCounter";
       let fallbackRfqCounter = 0;
-
-      document.querySelectorAll(".quote-time-hour").forEach((select) => {
-        select.insertAdjacentHTML(
-          "beforeend",
-          Array.from({ length: 12 }, (_, index) => String(index + 1))
-            .map((hour) => `<option value="${hour}">${hour}</option>`)
-            .join("")
-        );
+      const timeOptions = Array.from({ length: 48 }, (_, index) => {
+        const hours = Math.floor(index / 2);
+        const minutes = index % 2 === 0 ? "00" : "30";
+        const value = `${String(hours).padStart(2, "0")}:${minutes}`;
+        const displayHours = hours % 12 || 12;
+        const period = hours < 12 ? "AM" : "PM";
+        return { value, label: `${displayHours}:${minutes} ${period}` };
       });
+
+      const closeTimePickers = (exceptPicker) => {
+        document.querySelectorAll("[data-time-picker]").forEach((picker) => {
+          if (picker === exceptPicker) return;
+          picker.querySelector(".time-picker-menu").hidden = true;
+          picker.querySelector(".time-picker-trigger").setAttribute("aria-expanded", "false");
+        });
+      };
+
+      document.querySelectorAll("[data-time-picker]").forEach((picker) => {
+        const trigger = picker.querySelector(".time-picker-trigger");
+        const menu = picker.querySelector(".time-picker-menu");
+        const input = picker.querySelector('input[type="hidden"]');
+        const label = picker.querySelector("[data-time-label]");
+
+        menu.innerHTML = timeOptions
+          .map((option) => `<button class="time-picker-option" type="button" role="option" data-time-value="${option.value}">${option.label}</button>`)
+          .join("");
+
+        trigger.addEventListener("click", (event) => {
+          event.stopPropagation();
+          const willOpen = menu.hidden;
+          closeTimePickers(picker);
+          menu.hidden = !willOpen;
+          trigger.setAttribute("aria-expanded", String(willOpen));
+          trigger.removeAttribute("aria-invalid");
+        });
+
+        menu.addEventListener("click", (event) => {
+          const option = event.target.closest("[data-time-value]");
+          if (!option) return;
+          input.value = option.dataset.timeValue;
+          label.textContent = option.textContent;
+          menu.querySelectorAll(".time-picker-option").forEach((item) => item.classList.toggle("is-selected", item === option));
+          menu.hidden = true;
+          trigger.setAttribute("aria-expanded", "false");
+          trigger.removeAttribute("aria-invalid");
+        });
+      });
+
+      document.addEventListener("click", () => closeTimePickers());
 
       const getNextRfqNumber = () => {
         try {
@@ -2497,15 +2832,25 @@
       const formatEventDate = (value) => {
         const [year, month, day] = String(value).split("-");
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        return year && month && day ? `${monthNames[Number(month) - 1]} ${Number(day)},${year}` : value;
+        const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        const weekday = dayNames[new Date(Date.UTC(Number(year), Number(month) - 1, Number(day))).getUTCDay()];
+        return year && month && day ? `${monthNames[Number(month) - 1]} ${Number(day)}, ${year} (${weekday})` : value;
       };
 
-      const formatCompactTime = (hourValue, slotValue) => {
-        const [minutes, period] = String(slotValue).split("-");
-        let hours = Number(hourValue) % 12;
-        if (period === "PM") hours += 12;
-        return `${String(hours).padStart(2, "0")}:${minutes}`;
-      };
+      document.querySelectorAll("[data-date-picker]").forEach((picker) => {
+        const input = picker.querySelector('input[type="date"]');
+        const label = picker.querySelector("[data-date-label]");
+        const display = picker.querySelector(".date-picker-display");
+
+        const updateDateLabel = () => {
+          label.textContent = input.value ? formatEventDate(input.value) : "Select Date";
+          display.classList.toggle("is-empty", !input.value);
+        };
+
+        input.addEventListener("change", updateDateLabel);
+        input.addEventListener("input", updateDateLabel);
+        updateDateLabel();
+      });
 
       const escapeHtml = (value) => String(value)
         .replaceAll("&", "&amp;")
@@ -2530,6 +2875,17 @@
 
         if (invalidField) {
           invalidField.reportValidity();
+          return false;
+        }
+
+        const invalidTimePicker = panel
+          ? [...panel.querySelectorAll("[data-time-required]")].find((picker) => !picker.querySelector('input[type="hidden"]').value)
+          : null;
+
+        if (invalidTimePicker) {
+          const trigger = invalidTimePicker.querySelector(".time-picker-trigger");
+          trigger.setAttribute("aria-invalid", "true");
+          trigger.focus();
           return false;
         }
 
@@ -2582,7 +2938,7 @@
             </span>
             <span class="quantity-control">
               <button type="button" data-quantity-change="-1" data-equipment-index="${index}" aria-label="Decrease ${escapeHtml(item.name)} quantity">−</button>
-              <span>${item.quantity}</span>
+              <input type="number" min="1" inputmode="numeric" value="${item.quantity}" data-quantity-input data-equipment-index="${index}" aria-label="${escapeHtml(item.name)} quantity" />
               <button type="button" data-quantity-change="1" data-equipment-index="${index}" aria-label="Increase ${escapeHtml(item.name)} quantity">+</button>
             </span>
             <button class="remove-equipment" type="button" data-remove-equipment="${index}">Remove</button>
@@ -2630,6 +2986,26 @@
         }
       });
 
+      selectedEquipmentList?.addEventListener("input", (event) => {
+        const quantityInput = event.target.closest("[data-quantity-input]");
+        if (!quantityInput) return;
+
+        const index = Number(quantityInput.dataset.equipmentIndex);
+        formState.equipmentItems[index].quantity = quantityInput.value === ""
+          ? ""
+          : Math.max(1, Number.parseInt(quantityInput.value, 10) || 1);
+      });
+
+      selectedEquipmentList?.addEventListener("focusout", (event) => {
+        const quantityInput = event.target.closest("[data-quantity-input]");
+        if (!quantityInput) return;
+
+        const index = Number(quantityInput.dataset.equipmentIndex);
+        const normalizedQuantity = Math.max(1, Number.parseInt(quantityInput.value, 10) || 1);
+        formState.equipmentItems[index].quantity = normalizedQuantity;
+        quantityInput.value = String(normalizedQuantity);
+      });
+
       document.querySelectorAll("[data-next]").forEach((button) => {
         button.addEventListener("click", () => {
           const currentStep = Number(button.closest("[data-step]")?.dataset.step || 1);
@@ -2663,9 +3039,9 @@
             email: formData.get("email"),
             venue: formData.get("venue"),
             ingressDate: formData.get("ingressDate"),
-            ingressTime: formatCompactTime(formData.get("ingressHour"), formData.get("ingressTimeSlot")),
+            ingressTime: formData.get("ingressTime"),
             egressDate: formData.get("egressDate"),
-            egressTime: formatCompactTime(formData.get("egressHour"), formData.get("egressTimeSlot")),
+            egressTime: formData.get("egressTime"),
             equipmentItems: formState.equipmentItems,
             notes: formData.get("notes")
           };
