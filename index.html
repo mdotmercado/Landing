@@ -12,6 +12,7 @@
 </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="erh-rfq-endpoint" content="https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec" />
     <title>Events Rental Hub | Tables and Chairs Rental in Metro Manila and Cavite</title>
     <link rel="canonical" href="https://eventsrentalhub.com/" />
     <link rel="icon" type="image/png" href="assets/logo/favicon.png?v=3" />
@@ -1627,6 +1628,25 @@
         line-height: 1.6;
         text-align: center;
       }
+      .quote-submission-status {
+        display: none;
+        margin: 0;
+        border-radius: 10px;
+        padding: 12px 14px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 800;
+        line-height: 1.5;
+      }
+      .quote-submission-status.is-visible { display: block; }
+      .quote-submission-status.is-success {
+        background: var(--emerald-50);
+        color: var(--emerald-800);
+      }
+      .quote-submission-status.is-error {
+        background: var(--red-50);
+        color: var(--red-700);
+      }
       footer {
         border-top: 1px solid var(--slate-200);
         padding: 28px 16px;
@@ -2395,6 +2415,7 @@
                   <button class="step-back" type="button" data-back="2">‹ Back</button>
                 </div>
                 <button class="cta submit" type="submit">Send Quote Request</button>
+                <p class="quote-submission-status" id="quote-submission-status" role="status" aria-live="polite"></p>
                 <p class="submit-note">⚡ Replies via Viber/Email in under 15 minutes.</p>
               </div>
             </div>
@@ -2530,7 +2551,7 @@
                       ]
               },
               {
-                      "name": "Monobloc",
+                      "name": "Monobloc Chairs",
                       "photos": [
                               "catalog/thumbnails/Monobloc%203x4.webp",
                               "catalog/assets/monoblock-chairs/Monobloc Chairs 2.jpg",
@@ -2760,13 +2781,13 @@
       const selectedEquipmentList = document.getElementById("selected-equipment-list");
       const equipmentEmpty = document.getElementById("equipment-empty");
       const equipmentValidation = document.getElementById("equipment-validation");
+      const quoteSubmissionStatus = document.getElementById("quote-submission-status");
+      const rfqEndpoint = document.querySelector('meta[name="erh-rfq-endpoint"]')?.content || "";
       const equipmentItems = inventory.map((item) => ({
         name: item.name,
         image: item.photos[0]
       }));
       const formState = { equipmentItems: [] };
-      const rfqCounterKey = "erhRfqCounter";
-      let fallbackRfqCounter = 0;
       const timeOptions = Array.from({ length: 48 }, (_, index) => {
         const hours = Math.floor(index / 2);
         const minutes = index % 2 === 0 ? "00" : "30";
@@ -2816,18 +2837,6 @@
       });
 
       document.addEventListener("click", () => closeTimePickers());
-
-      const getNextRfqNumber = () => {
-        try {
-          const currentNumber = Number.parseInt(localStorage.getItem(rfqCounterKey) || "0", 10);
-          const nextNumber = Number.isFinite(currentNumber) ? currentNumber + 1 : 1;
-          localStorage.setItem(rfqCounterKey, String(nextNumber));
-          return nextNumber;
-        } catch (error) {
-          fallbackRfqCounter += 1;
-          return fallbackRfqCounter;
-        }
-      };
 
       const formatEventDate = (value) => {
         const [year, month, day] = String(value).split("-");
@@ -2898,7 +2907,6 @@
         const query = equipmentPicker.value.trim().toLowerCase();
         const selectedNames = new Set(formState.equipmentItems.map((item) => item.name));
         const filteredItems = equipmentItems.filter((item) => !query || item.name.toLowerCase().includes(query));
-        const hasExactMatch = equipmentItems.some((item) => item.name.toLowerCase() === query);
 
         equipmentOptions.innerHTML = filteredItems.map((item) => {
           const selected = selectedNames.has(item.name);
@@ -2913,16 +2921,7 @@
           `;
         }).join("");
 
-        if (query && !hasExactMatch) {
-          equipmentOptions.insertAdjacentHTML("beforeend", `
-            <button class="equipment-option" type="button" data-custom-equipment="${encodeURIComponent(equipmentPicker.value.trim())}">
-              <span>Add custom equipment: ${escapeHtml(equipmentPicker.value.trim())}</span>
-              <span class="equipment-option-action">Add</span>
-            </button>
-          `);
-        }
-
-        if (!filteredItems.length && (!query || hasExactMatch)) {
+        if (!filteredItems.length) {
           equipmentOptions.innerHTML = '<p class="equipment-empty">No matching equipment found.</p>';
         }
       };
@@ -2960,14 +2959,12 @@
       equipmentPicker?.addEventListener("input", renderEquipmentOptions);
       equipmentOptions?.addEventListener("click", (event) => {
         const equipmentButton = event.target.closest("[data-equipment-name]");
-        const customButton = event.target.closest("[data-custom-equipment]");
 
         if (equipmentButton) {
           const name = decodeURIComponent(equipmentButton.dataset.equipmentName);
           const item = equipmentItems.find((equipmentItem) => equipmentItem.name === name);
           addEquipment(name, item?.image);
         }
-        if (customButton) addEquipment(decodeURIComponent(customButton.dataset.customEquipment));
       });
       selectedEquipmentList?.addEventListener("click", (event) => {
         const removeButton = event.target.closest("[data-remove-equipment]");
@@ -3021,7 +3018,7 @@
       renderSelectedEquipment();
 
       if (quoteForm) {
-        quoteForm.addEventListener("submit", (event) => {
+        quoteForm.addEventListener("submit", async (event) => {
           event.preventDefault();
 
           if (!formState.equipmentItems.length) {
@@ -3030,10 +3027,12 @@
             return;
           }
 
+          const submitButton = quoteForm.querySelector(".submit");
+          if (submitButton?.disabled) return;
+
           const formData = new FormData(quoteForm);
-          const requestNumber = getNextRfqNumber();
           const payload = {
-            requestNumber,
+            source: "homepage",
             name: formData.get("name"),
             contactNumber: formData.get("contactNumber"),
             email: formData.get("email"),
@@ -3047,43 +3046,44 @@
           };
           window.erhLastLeadPayload = payload;
 
-          const eventDate = formatEventDate(payload.ingressDate);
-          const subject = encodeURIComponent(`RFQ#${requestNumber}-${payload.name.trim()}-${eventDate}`);
-          const equipmentList = payload.equipmentItems
-            .map((item, index) => `${index + 1}. ${item.name} - Qty: ${item.quantity}`)
-            .join("\n");
-          const body = encodeURIComponent([
-            "Hi Events Rental Hub,",
-            "",
-            `RFQ reference: RFQ#${requestNumber}`,
-            `Name: ${payload.name}`,
-            `Contact number: ${payload.contactNumber}`,
-            `Email: ${payload.email}`,
-            `Event venue: ${payload.venue}`,
-            `Ingress date/time: ${payload.ingressDate} ${payload.ingressTime}`,
-            `Egress date/time: ${payload.egressDate} ${payload.egressTime}`,
-            "",
-            "Equipment to be rented:",
-            equipmentList,
-            "",
-            `Notes: ${payload.notes || ""}`,
-            "",
-            "Please send me a quote or availability update. Thank you."
-          ].join("\n"));
-          const cc = encodeURIComponent([
-            "mdotmercado@gmail.com",
-            "kennethaudreydeocampo@gmail.com",
-            "sls.sonnysumalinog@gmail.com",
-            payload.email
-          ].filter(Boolean).join(","));
-          const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=erh.rental@gmail.com&cc=${cc}&su=${subject}&body=${body}`;
-          const submitButton = quoteForm.querySelector(".submit");
+          const showSubmissionStatus = (type, message) => {
+            if (!quoteSubmissionStatus) return;
+            quoteSubmissionStatus.textContent = message;
+            quoteSubmissionStatus.className = `quote-submission-status is-visible is-${type}`;
+          };
 
-          if (submitButton) {
-            submitButton.textContent = "Opening Quote Request...";
+          if (!rfqEndpoint || rfqEndpoint.includes("YOUR_DEPLOYMENT_ID")) {
+            showSubmissionStatus("error", "Quote email service is not configured yet. Please contact Events Rental Hub directly.");
+            return;
           }
 
-          window.location.href = gmailComposeUrl;
+          if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = "Sending Quote Request...";
+          }
+          quoteSubmissionStatus?.classList.remove("is-visible", "is-success", "is-error");
+
+          try {
+            const response = await fetch(rfqEndpoint, {
+              method: "POST",
+              headers: { "Content-Type": "text/plain;charset=utf-8" },
+              body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+
+            if (!response.ok || !result.ok || !result.rfqNumber) {
+              throw new Error(result.error || "Unable to send quote request.");
+            }
+
+            showSubmissionStatus("success", "Thank you! Your quote request has been sent. We’ll get back to you shortly.");
+          } catch (error) {
+            showSubmissionStatus("error", "We could not send your quote request. Please check your connection and try again.");
+          } finally {
+            if (submitButton) {
+              submitButton.disabled = false;
+              submitButton.textContent = "Send Quote Request";
+            }
+          }
         });
       }
 
