@@ -1848,8 +1848,36 @@
         cursor: pointer;
       }
       @media (max-width: 767px) {
-        .messenger-panel { right: 16px; bottom: 84px; }
-        .messenger-launch { right: 16px; bottom: 84px; }
+        .messenger-panel {
+          right: 16px;
+          bottom: 84px;
+          width: min(260px, calc(100vw - 32px));
+          padding: 12px;
+        }
+        .messenger-panel .messenger-avatar {
+          width: 36px;
+          height: 36px;
+        }
+        .messenger-panel h2 {
+          margin-top: 8px;
+          font-size: 14px;
+        }
+        .messenger-panel > p {
+          margin-top: 4px;
+          font-size: 12px;
+          line-height: 1.45;
+        }
+        .messenger-start {
+          margin-top: 12px;
+          padding: 10px 14px;
+        }
+        .messenger-powered { margin-top: 8px; }
+        .messenger-launch {
+          right: 16px;
+          bottom: 84px;
+          width: 48px;
+          height: 48px;
+        }
         .mobile-bar { padding: 8px; }
         .mobile-bar .cta {
           padding: 12px 16px;
