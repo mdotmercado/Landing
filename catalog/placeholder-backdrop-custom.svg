@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">Custom backdrop placeholder</title>
+  <desc id="desc">Placeholder illustration for a custom event backdrop setup.</desc>
+  <rect width="1200" height="900" fill="#fffaf2"/>
+  <rect x="0" y="610" width="1200" height="290" fill="#eadfce"/>
+  <rect x="280" y="145" width="640" height="480" rx="30" fill="#ffffff" stroke="#242220" stroke-width="8"/>
+  <rect x="330" y="195" width="540" height="380" rx="24" fill="#f7efe1" stroke="#d3c3ad" stroke-width="6"/>
+  <circle cx="388" cy="225" r="36" fill="#c06678"/>
+  <circle cx="448" cy="195" r="38" fill="#ffffff" stroke="#d3c3ad" stroke-width="5"/>
+  <circle cx="512" cy="220" r="34" fill="#c9972b"/>
+  <circle cx="808" cy="225" r="36" fill="#517ea2"/>
+  <circle cx="750" cy="195" r="38" fill="#ffffff" stroke="#d3c3ad" stroke-width="5"/>
+  <rect x="435" y="505" width="330" height="85" rx="12" fill="#ffffff" stroke="#d3c3ad" stroke-width="6"/>
+  <text x="600" y="835" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" fill="#242220">Photo coming soon</text>
+</svg>

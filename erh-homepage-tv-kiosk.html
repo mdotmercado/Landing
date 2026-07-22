@@ -12,7 +12,7 @@
 </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="erh-rfq-endpoint" content="https://script.google.com/macros/s/AKfycbzgISvFREmwBIpv8-gSR9glrlt3-uz1KrE_9gIwCGIwwE9MCwPLSMHvaocLrENvsReQ/exec" />
+    <meta name="erh-rfq-endpoint" content="https://script.google.com/macros/s/AKfycby7oc8KuCeTgnrZjuHs59c8sbKMJqNvCX2OX0zN1UPMwVXj0v5kl6RU5GsfYIas7FQ/exec" />
     <title>Events Rental Hub | Tables and Chairs Rental in Metro Manila and Cavite</title>
     <link rel="canonical" href="https://eventsrentalhub.com/" />
     <link rel="icon" type="image/png" href="assets/logo/favicon.png?v=3" />
@@ -1536,51 +1536,6 @@
         background: var(--slate-50);
         padding: 10px 12px;
       }
-      .catalog-handoff {
-        display: grid;
-        gap: 14px;
-        border: 1px solid var(--slate-200);
-        border-radius: 18px;
-        background: var(--slate-50);
-        padding: 18px;
-      }
-      .catalog-handoff h4 {
-        margin: 0;
-        font-size: 20px;
-        line-height: 1.2;
-      }
-      .catalog-handoff p {
-        margin: 0;
-        color: var(--slate-600);
-        font-size: 14px;
-        font-weight: 700;
-        line-height: 1.7;
-      }
-      .catalog-handoff-points {
-        display: grid;
-        gap: 8px;
-        color: var(--slate-700);
-        font-size: 13px;
-        font-weight: 900;
-      }
-      .catalog-handoff-points span {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .catalog-handoff-points span::before {
-        content: "✓";
-        display: grid;
-        width: 22px;
-        height: 22px;
-        place-items: center;
-        border-radius: 999px;
-        background: var(--slate-950);
-        color: white;
-        font-size: 12px;
-        font-weight: 950;
-        flex: 0 0 auto;
-      }
       .equipment-validation {
         display: none;
         color: var(--red-700);
@@ -2531,8 +2486,34 @@
                 </div>
                 <div class="step-actions">
                   <button class="step-back" type="button" data-back="1">‹ Back</button>
-                  <button class="step-next" type="button" data-catalog-handoff>Next: Equipment ›</button>
+                  <button class="step-next" type="button" data-next="3">Next: Equipment ›</button>
                 </div>
+              </div>
+
+              <div class="step-panel" data-step="3">
+                <div>
+                  <p class="step-kicker">Step 3 of 3</p>
+                  <h3 class="step-title">Equipment and notes</h3>
+                  <p class="step-help">Search and add the equipment you need, adjust quantities, and include any special request.</p>
+                </div>
+                <div class="equipment-picker-wrap">
+                  <label><span>Equipment to be rented</span><input id="equipment-picker" type="search" placeholder="Search or type equipment name..." autocomplete="off" /></label>
+                  <div class="equipment-options" id="equipment-options" aria-live="polite"></div>
+                </div>
+                <div class="selected-equipment">
+                  <h4>Selected equipment</h4>
+                  <ol class="selected-equipment-list" id="selected-equipment-list"></ol>
+                  <p class="equipment-empty" id="equipment-empty">No equipment selected yet.</p>
+                  <p class="equipment-validation" id="equipment-validation">Please add at least one equipment item.</p>
+                </div>
+                <p class="quote-fee-note">Note: Transportation, toll, and setup fees are not included. Our team will send the final quotation with terms, conditions, and payment details.</p>
+                <label><span>Notes</span><textarea name="notes" rows="3" placeholder="Specific request, color of covers etc."></textarea></label>
+                <div class="step-actions">
+                  <button class="step-back" type="button" data-back="2">‹ Back</button>
+                </div>
+                <button class="cta submit" type="submit">Send Quote Request</button>
+                <p class="quote-submission-status" id="quote-submission-status" role="status" aria-live="polite"></p>
+                <p class="submit-note">⚡ Replies via Viber/Email in under 15 minutes.</p>
               </div>
             </div>
             <div class="quote-success-screen" id="quote-success-screen" role="status" aria-live="polite" tabindex="-1">
@@ -2887,7 +2868,6 @@
       const quoteSubmissionStatus = document.getElementById("quote-submission-status");
       const quoteSuccessScreen = document.getElementById("quote-success-screen");
       const rfqEndpoint = document.querySelector('meta[name="erh-rfq-endpoint"]')?.content || "";
-      const rfqDraftStorageKey = "erh-rfq-contact-schedule";
       const equipmentItems = inventory.map((item) => ({
         name: item.name,
         image: item.photos[0]
@@ -3015,46 +2995,6 @@
         return true;
       };
 
-      const getContactScheduleDraft = () => {
-        if (!quoteForm) return null;
-        const formData = new FormData(quoteForm);
-        return {
-          name: String(formData.get("name") || "").trim(),
-          contactNumber: String(formData.get("contactNumber") || "").trim(),
-          email: String(formData.get("email") || "").trim(),
-          venue: String(formData.get("venue") || "").trim(),
-          ingressDate: String(formData.get("ingressDate") || ""),
-          ingressTime: String(formData.get("ingressTime") || ""),
-          egressDate: String(formData.get("egressDate") || ""),
-          egressTime: String(formData.get("egressTime") || "")
-        };
-      };
-
-      const saveContactScheduleDraft = () => {
-        const draft = getContactScheduleDraft();
-        if (!draft) return;
-        try {
-          window.localStorage.setItem(rfqDraftStorageKey, JSON.stringify(draft));
-        } catch (error) {
-          // Users can still continue; catalog checkout will ask for details again if storage is unavailable.
-        }
-      };
-
-      const goToCatalogForEquipment = () => {
-        if (!validateStep(1)) {
-          setStep(1);
-          return;
-        }
-
-        if (!validateStep(2)) {
-          setStep(2);
-          return;
-        }
-
-        saveContactScheduleDraft();
-        window.location.href = "catalog/";
-      };
-
       const renderEquipmentOptions = () => {
         if (!equipmentOptions || !equipmentPicker) return;
 
@@ -3160,17 +3100,12 @@
       document.querySelectorAll("[data-next]").forEach((button) => {
         button.addEventListener("click", () => {
           const currentStep = Number(button.closest("[data-step]")?.dataset.step || 1);
-          if (!validateStep(currentStep)) return;
-          setStep(button.dataset.next);
+          if (validateStep(currentStep)) setStep(button.dataset.next);
         });
       });
 
       document.querySelectorAll("[data-back]").forEach((button) => {
         button.addEventListener("click", () => setStep(button.dataset.back));
-      });
-
-      document.querySelectorAll("[data-catalog-handoff]").forEach((button) => {
-        button.addEventListener("click", goToCatalogForEquipment);
       });
 
       renderEquipmentOptions();
@@ -3225,9 +3160,76 @@
       });
 
       if (quoteForm) {
-        quoteForm.addEventListener("submit", (event) => {
+        quoteForm.addEventListener("submit", async (event) => {
           event.preventDefault();
-          goToCatalogForEquipment();
+
+          if (!formState.equipmentItems.length) {
+            equipmentValidation?.classList.add("is-visible");
+            equipmentPicker?.focus();
+            return;
+          }
+
+          const submitButton = quoteForm.querySelector(".submit");
+          if (submitButton?.disabled) return;
+
+          const formData = new FormData(quoteForm);
+          const payload = {
+            source: "homepage",
+            name: formData.get("name"),
+            contactNumber: formData.get("contactNumber"),
+            email: formData.get("email"),
+            venue: formData.get("venue"),
+            ingressDate: formData.get("ingressDate"),
+            ingressTime: formData.get("ingressTime"),
+            egressDate: formData.get("egressDate"),
+            egressTime: formData.get("egressTime"),
+            equipmentItems: formState.equipmentItems,
+            notes: formData.get("notes")
+          };
+          window.erhLastLeadPayload = payload;
+
+          const showSubmissionStatus = (type, message) => {
+            if (!quoteSubmissionStatus) return;
+            quoteSubmissionStatus.textContent = message;
+            quoteSubmissionStatus.className = `quote-submission-status is-visible is-${type}`;
+          };
+
+          if (!rfqEndpoint || rfqEndpoint.includes("YOUR_DEPLOYMENT_ID")) {
+            showSubmissionStatus("error", "Quote email service is not configured yet. Please contact Events Rental Hub directly.");
+            return;
+          }
+
+          if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = "Sending Quote Request...";
+          }
+          quoteSubmissionStatus?.classList.remove("is-visible", "is-success", "is-error");
+
+          try {
+            const response = await fetch(rfqEndpoint, {
+              method: "POST",
+              headers: { "Content-Type": "text/plain;charset=utf-8" },
+              body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+
+            if (!response.ok || !result.ok || !result.rfqNumber) {
+              throw new Error(result.error || "Unable to send quote request.");
+            }
+
+            quoteSubmissionStatus?.classList.remove("is-visible", "is-success", "is-error");
+            if (quoteSubmissionStatus) quoteSubmissionStatus.textContent = "";
+            quoteForm.classList.add("is-submission-success");
+            quoteSuccessScreen?.focus();
+            quoteResetTimer = window.setTimeout(resetQuoteForm, 5000);
+          } catch (error) {
+            showSubmissionStatus("error", "We could not send your quote request. Please check your connection and try again.");
+          } finally {
+            if (submitButton) {
+              submitButton.disabled = false;
+              submitButton.textContent = "Send Quote Request";
+            }
+          }
         });
       }
 
