@@ -1,0 +1,10 @@
+User-Agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /preview/
+Disallow: /quote-success/
+Disallow: /search/
+
+Host: https://www.eventsrentalhub.com
+Sitemap: https://www.eventsrentalhub.com/sitemap.xml
