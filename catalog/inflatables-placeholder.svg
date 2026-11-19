@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" role="img" aria-label="Inflatables image coming soon">
+  <rect width="600" height="800" fill="#f7f5f1"/>
+  <circle cx="116" cy="160" r="103" fill="#e5edf2"/>
+  <circle cx="486" cy="195" r="113" fill="#f1dfe2"/>
+  <rect x="110" y="328" width="380" height="242" rx="80" fill="#e8e2dc"/>
+  <rect x="145" y="358" width="310" height="185" rx="58" fill="#fff"/>
+  <path d="M154 533c43-51 82-51 126 0 44-51 83-51 127 0" fill="none" stroke="#d9e7ed" stroke-width="22" stroke-linecap="round"/>
+  <circle cx="181" cy="295" r="35" fill="#dfccd1"/><circle cx="298" cy="264" r="42" fill="#dce8ed"/><circle cx="409" cy="295" r="35" fill="#eadacb"/>
+  <rect x="48" y="645" width="504" height="96" rx="25" fill="#fff" opacity=".94"/>
+  <text x="300" y="701" text-anchor="middle" fill="#63585d" font-family="Arial,sans-serif" font-size="22" font-weight="700">Image coming soon</text>
+</svg>

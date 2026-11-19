@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" role="img" aria-label="Soft Play image coming soon">
+  <rect width="600" height="800" fill="#f8f5f1"/>
+  <circle cx="115" cy="144" r="104" fill="#f3dedd"/>
+  <circle cx="503" cy="250" r="128" fill="#e5edf2"/>
+  <circle cx="297" cy="484" r="167" fill="#f0e6d7"/>
+  <path d="M124 474c0-99 78-179 176-179s176 80 176 179" fill="none" stroke="#c7aeb1" stroke-width="22" stroke-linecap="round"/>
+  <path d="M182 475c0-67 53-121 118-121s118 54 118 121" fill="none" stroke="#fff" stroke-width="25" stroke-linecap="round"/>
+  <circle cx="229" cy="496" r="29" fill="#fff"/><circle cx="293" cy="506" r="29" fill="#e8d5d6"/><circle cx="357" cy="496" r="29" fill="#d8e5ec"/>
+  <rect x="48" y="645" width="504" height="96" rx="25" fill="#fff" opacity=".94"/>
+  <text x="300" y="701" text-anchor="middle" fill="#63585d" font-family="Arial,sans-serif" font-size="22" font-weight="700">Image coming soon</text>
+</svg>
